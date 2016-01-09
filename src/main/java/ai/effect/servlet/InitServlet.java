@@ -28,7 +28,7 @@ public class InitServlet extends DnaServlet {
             System.out.println("Start = " + session.getAttribute("start"));
             System.out.println("Stop = " + session.getAttribute("stop"));
         }
-        return "{\"session-id\": " + session.getId()
-                + ", \"items\": [{\"id\": \".btn\", \"attributes\": [{\"attribute\": \"background-color\", \"value\": \"blue\"}]}]}";
+        return "{\"session-id\": \"" + session.getId()
+                + "\", \"items\": [{\"id\": \".btn\", \"attributes\": [{\"attribute\": \"background-color\", \"value\": \"blue\"}]}]}";
     }
 }
