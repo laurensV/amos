@@ -30,15 +30,6 @@ public class App {
         context.setContextPath("/dna");
         server.setHandler(context);
 
-        HashSessionIdManager hashSessionIdManager = new HashSessionIdManager();
-        SessionHandler sessionHandler = new SessionHandler();
-        SessionManager sessionManager = new HashSessionManager();
-        sessionManager.setSessionIdManager(hashSessionIdManager);
-        sessionHandler.setSessionManager(sessionManager);
-        sessionHandler.setHandler(context);
-        sessionHandler.setServer(server);
-        server.setSessionIdManager(hashSessionIdManager);
-
         FilterHolder cors = context.addFilter(CrossOriginFilter.class, "/*", EnumSet.of(DispatcherType.REQUEST));
         cors.setInitParameter(CrossOriginFilter.ALLOWED_ORIGINS_PARAM, "*");
         cors.setInitParameter(CrossOriginFilter.ALLOW_CREDENTIALS_PARAM, "true");
