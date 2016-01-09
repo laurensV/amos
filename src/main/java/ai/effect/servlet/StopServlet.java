@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 public class StopServlet extends DnaServlet {
-    protected String getResponse(HttpServletRequest req) {
+    protected String getResponse(HttpServletRequest req, String argument) {
         HttpSession session = req.getSession(false);
 
         if (session == null) {

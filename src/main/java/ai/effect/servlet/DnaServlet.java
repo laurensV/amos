@@ -12,9 +12,13 @@ import org.eclipse.jetty.http.HttpStatus;
 public abstract class DnaServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
+        String argument = "";
         resp.setStatus(HttpStatus.OK_200);
-        String response = this.getResponse(req);
+        /* TODO: Security checks for user input argument */
+        if (req.getPathInfo() != null) {
+            argument = req.getPathInfo().split("/")[1];
+        }
+        String response = this.getResponse(req, argument);
         resp.getWriter().println(response);
     }
 
@@ -23,5 +27,5 @@ public abstract class DnaServlet extends HttpServlet {
      * 
      * @return
      */
-    protected abstract String getResponse(HttpServletRequest req);
+    protected abstract String getResponse(HttpServletRequest req, String argument);
 }

@@ -12,16 +12,7 @@ import javax.servlet.http.HttpSession;
 import org.eclipse.jetty.http.HttpStatus;
 
 public class StartServlet extends DnaServlet {
-    @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
-        resp.setStatus(HttpStatus.OK_200);
-        String response = this.getResponse(req);
-        resp.getWriter().println(response);
-    }
-
-    protected String getResponse(HttpServletRequest req) {
-
+    protected String getResponse(HttpServletRequest req, String argument) {
         HttpSession session = req.getSession(false);
 
         if (session == null) {

@@ -37,10 +37,10 @@ public class App {
         cors.setInitParameter(CrossOriginFilter.ALLOWED_METHODS_PARAM, "GET");
         cors.setInitParameter(CrossOriginFilter.ALLOWED_HEADERS_PARAM, "X-Requested-With,Content-Type,Accept,Origin");
 
-        context.addServlet(new ServletHolder(new InitServlet()), "/init");
-        context.addServlet(new ServletHolder(new ClickServlet()), "/click");
-        context.addServlet(new ServletHolder(new StartServlet()), "/start");
-        context.addServlet(new ServletHolder(new StopServlet()), "/stop");
+        context.addServlet(new ServletHolder(new InitServlet()), "/init/*");
+        context.addServlet(new ServletHolder(new ClickServlet()), "/click/*");
+        context.addServlet(new ServletHolder(new StartServlet()), "/start/*");
+        context.addServlet(new ServletHolder(new StopServlet()), "/stop/*");
 
         server.start();
 

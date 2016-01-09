@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 public class ClickServlet extends DnaServlet {
-    protected String getResponse(HttpServletRequest req) {
+    protected String getResponse(HttpServletRequest req, String argument) {
         return "{\"code\": \"OK\"}";
     }
 }
