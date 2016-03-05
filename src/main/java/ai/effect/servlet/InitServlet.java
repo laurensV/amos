@@ -25,7 +25,7 @@ public class InitServlet extends DnaServlet {
         if (session == null) {
             System.out.println("no session");
         } else {
-            unixTime = System.currentTimeMillis() / 1000L;
+            unixTime = (System.currentTimeMillis() / 1000L);
             session.setAttribute("created", unixTime);
             session.setAttribute("ip", req.getRemoteAddr());
             session.setAttribute("start", "");
@@ -59,10 +59,10 @@ public class InitServlet extends DnaServlet {
         this.insertVisitor(visitor_IP, visitor_time, location);
         
         /* TODO: retrieve profiles instead of dummy profile */
-        double profile_lat = 52.4667 , profile_long = 4.9;
+        double profile_lat = 52.132633 , profile_long = 5.291266;
         double profile_time = 1457181877;
         double distance = this.distance(location.getLatitude(), location.getLongitude(), profile_lat, profile_long);
-        double timeDiff = Math.abs(profile_time - visitor_time);
+        double timeDiff = Math.abs(profile_time % (24*3600) - visitor_time % (24*3600));
         System.out.printf("distance %f\n", distance);
         System.out.printf("time difference %f\n", timeDiff);
         /* TODO: select best matching profile */
