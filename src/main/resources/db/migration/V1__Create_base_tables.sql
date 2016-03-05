@@ -1,8 +1,8 @@
 CREATE TABLE profile(
 	id serial PRIMARY KEY,
 	name varchar(40) NOT NULL CHECK (name <> ''),
-	latitute real,
-	longitute real,
+	latitude real,
+	longitude real,
 	time_of_day integer
 );
 
