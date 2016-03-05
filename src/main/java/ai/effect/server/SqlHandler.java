@@ -57,4 +57,15 @@ public class SqlHandler {
 
         return rs;
     }
+
+    public void executeUpdate(String sql) {
+        try {
+            Connection connection = connectionPool.getConnection();
+            Statement stmt = connection.createStatement();
+            stmt.executeUpdate(sql);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 }
