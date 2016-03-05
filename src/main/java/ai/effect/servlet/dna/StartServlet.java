@@ -1,17 +1,17 @@
 package ai.effect.servlet.dna;
 
-import java.io.IOException;
 import java.util.Date;
 
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.eclipse.jetty.http.HttpStatus;
+import ai.effect.server.SqlHandler;
 
 public class StartServlet extends DnaServlet {
+    public StartServlet(SqlHandler sql) {
+        super(sql);
+    }
+
     protected String getResponse(HttpServletRequest req, String argument) {
         HttpSession session = req.getSession(false);
 

@@ -18,7 +18,14 @@ import com.maxmind.geoip2.record.Location;
 import com.maxmind.geoip2.record.Postal;
 import com.maxmind.geoip2.record.Subdivision;
 
+import ai.effect.server.SqlHandler;
+
+
 public class InitServlet extends DnaServlet {
+    public InitServlet(SqlHandler sql) {
+        super(sql);
+    }
+
     protected String getResponse(HttpServletRequest req, String argument) {
         HttpSession session = req.getSession(true);
         long unixTime = 0;

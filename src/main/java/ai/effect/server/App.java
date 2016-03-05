@@ -1,6 +1,9 @@
 package ai.effect.server;
 
 import java.net.URI;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.EnumSet;
 
 import javax.servlet.DispatcherType;
@@ -13,14 +16,11 @@ import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 import org.eclipse.jetty.servlets.CrossOriginFilter;
 
-import ai.effect.server.RestService;
-
 import ai.effect.servlet.dna.ClickServlet;
 import ai.effect.servlet.dna.InitServlet;
 import ai.effect.servlet.dna.StartServlet;
 import ai.effect.servlet.dna.StopServlet;
 
-import org.apache.commons.dbcp.*;
 
 /**
  * Effect.AI main application server
@@ -28,17 +28,11 @@ import org.apache.commons.dbcp.*;
  */
 public class App {
     /**
-     * Pool of database connections
-     */
-    private BasicDataSource connectionPool;
-
-    /**
      * Start the main application server
      */
     public static void main(String[] args) throws Exception {
-        App app = new App();
-
         Server server = new Server(7070);
+        SqlHandler sqlHandler = new SqlHandler();
 
         ContextHandlerCollection contexts = new ContextHandlerCollection();
 
@@ -52,12 +46,13 @@ public class App {
         cors.setInitParameter(CrossOriginFilter.ALLOWED_METHODS_PARAM, "GET");
         cors.setInitParameter(CrossOriginFilter.ALLOWED_HEADERS_PARAM, "X-Requested-With,Content-Type,Accept,Origin");
 
-        context.addServlet(new ServletHolder(new InitServlet()), "/init/*");
-        context.addServlet(new ServletHolder(new ClickServlet()), "/click/*");
-        context.addServlet(new ServletHolder(new StartServlet()), "/start/*");
-        context.addServlet(new ServletHolder(new StopServlet()), "/stop/*");
 
-        ServletContextHandler restContext = new RestService();
+        context.addServlet(new ServletHolder(new InitServlet(sqlHandler)), "/init/*");
+        context.addServlet(new ServletHolder(new ClickServlet(sqlHandler)), "/click/*");
+        context.addServlet(new ServletHolder(new StartServlet(sqlHandler)), "/start/*");
+        context.addServlet(new ServletHolder(new StopServlet(sqlHandler)), "/stop/*");
+
+        ServletContextHandler restContext = new RestService(sqlHandler);
         server.setHandler(restContext);
         contexts.setHandlers(new Handler[] { context, restContext });
 
@@ -67,22 +62,4 @@ public class App {
         System.out.println("Server started.");
     }
 
-    public App() {
-        System.out.println("con3");
-        this.setupDatabase();
-    }
-
-    public void setupDatabase() {
-        System.out.println("db url");
-        System.out.println(System.getenv("db.url"));
-        try {
-            // DATABASE_URL=postgres://postgres:@localhost/effect
-            URI dbUri = new URI(System.getenv().get("DATABASE_URL"));
-            String dbUrl = "jdbc:postgresql://" + dbUri.getHost() + dbUri.getPath();
-            System.out.println("test");
-            System.out.println(dbUrl);
-        } catch (Exception e) {
-
-        }
-    }
 }
