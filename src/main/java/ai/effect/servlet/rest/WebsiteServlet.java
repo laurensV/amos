@@ -14,7 +14,7 @@ public class WebsiteServlet extends Servlet {
     }
 
     public void doPost(HttpServletRequest req, HttpServletResponse resp) {
-        this.sql.executeSql("INSERT INTO website (url, dna_settings) VALUES ('2434', '[]');");
+        this.sql.executeUpdate("INSERT INTO website (url, dna_settings) VALUES ('2434', '[]');");
         try {
             resp.setStatus(HttpStatus.OK_200);
             resp.getWriter().println("hello");
