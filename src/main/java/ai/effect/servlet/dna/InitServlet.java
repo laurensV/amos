@@ -3,8 +3,6 @@ package ai.effect.servlet.dna;
 import java.io.File;
 import java.io.IOException;
 import java.net.InetAddress;
-import java.util.Date;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -29,12 +27,14 @@ public class InitServlet extends DnaServlet {
     protected String getResponse(HttpServletRequest req, String argument) {
         HttpSession session = req.getSession(true);
         long unixTime = 0;
+        int siteId = Integer.parseInt(argument);
+        String visitor_IP = req.getRemoteAddr();
         if (session == null) {
             System.out.println("no session");
         } else {
             unixTime = (System.currentTimeMillis() / 1000L);
             session.setAttribute("created", unixTime);
-            session.setAttribute("ip", req.getRemoteAddr());
+            session.setAttribute("ip", visitor_IP);
             session.setAttribute("start", "");
             session.setAttribute("stop", "");
             System.out.println("Session = " + session.getId());
@@ -43,10 +43,11 @@ public class InitServlet extends DnaServlet {
             System.out.println("Start = " + session.getAttribute("start"));
             System.out.println("Stop = " + session.getAttribute("stop"));
         }
-        String siteId = argument;
-        /* TODO: use IP and current time to map user to a profile */
+        /* TODO: use visitor IP instead of dummy IP*/
         /* TODO: use siteId and profile to select DNA */
-        this.mapToProfile("77.175.185.162", unixTime);
+        int profileId = this.mapToProfile("77.175.185.162", unixTime);
+        
+        /* */
 
         return "{\"session-id\": \"" + session.getId()
                 + "\", \"items\": [{\"id\": \".btn\", \"attributes\": [{\"attribute\": \"background-color\", \"value\": \"blue\"}]}]}";
@@ -68,13 +69,15 @@ public class InitServlet extends DnaServlet {
         /* TODO: retrieve profiles instead of dummy profile */
         double profile_lat = 52.132633 , profile_long = 5.291266;
         double profile_time = 43200;
+        int profile_id = 1;
+        
         double distance = this.distance(location.getLatitude(), location.getLongitude(), profile_lat, profile_long);
         double timeDiff = Math.abs(profile_time - visitor_time % (24*3600));
         System.out.printf("distance %f\n", distance);
         System.out.printf("time difference %f\n", timeDiff);
         /* TODO: select best matching profile */
         
-        return 1;
+        return profile_id;
     }
     
     /* get the distance in kilometres with the Haversine formula */
