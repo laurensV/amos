@@ -2,6 +2,9 @@ package ai.effect.models;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.SQLException;
+
+import org.postgresql.util.PGobject;
 
 import ai.effect.server.SqlHandler;
 
@@ -13,15 +16,25 @@ public class Website {
     /**
      * Constructor
      * Create a website object with parameters and save it to the database.
+     * @throws SQLException 
      */
     public Website(String url, String dna_settings, SqlHandler sql) {
         this.url = url;
         this.dna_settings = dna_settings;
         this.sql = sql;
         PreparedStatement stmt = this.sql.prepareStatement("INSERT INTO website (url, dna_settings) VALUES (?, ?);");
-        stmt.setString(1, url);
-        stmt.setString(2, dna_settings);
-        stmt.executeUpdate();
+
+        try {
+            PGobject jsonObject = new PGobject();
+            jsonObject.setType("json");
+            jsonObject.setValue(dna_settings);
+            stmt.setString(1, url);
+            stmt.setObject(2, jsonObject);
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -33,8 +46,13 @@ public class Website {
     public Website(int id, SqlHandler sql) {
         this.sql = sql;
         PreparedStatement stmt = this.sql.prepareStatement("SELECT * FROM website WHERE id = ? ;");
-        stmt.setInt(1, id);
-        stmt.executeQuery();
+        try {
+            stmt.setInt(1, id);
+            stmt.executeQuery();
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
     }
 
     public void save(Connection conn) {

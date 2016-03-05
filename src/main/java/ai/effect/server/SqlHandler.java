@@ -51,19 +51,19 @@ public class SqlHandler {
         PreparedStatement stmt = null;
         try {
             Connection connection = connectionPool.getConnection();
-            Statement stmt = connection.prepareStatement(sql);
+            stmt = connection.prepareStatement(sql);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return stmt
+        return stmt;
     }
 
     public ResultSet executeSql(String sql) {
         ResultSet rs = null;
         try {
             Connection connection = connectionPool.getConnection();
-            Statement stmt = connection.createStatement(sql);
-            rs = stmt.executeQuery();
+            Statement stmt = connection.createStatement();
+            rs = stmt.executeQuery(sql);
         } catch (Exception e) {
             e.printStackTrace();
         }
