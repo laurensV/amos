@@ -1,6 +1,9 @@
 CREATE TABLE profile(
 	id serial PRIMARY KEY,
-	name varchar(40) NOT NULL CHECK (name <> '')
+	name varchar(40) NOT NULL CHECK (name <> ''),
+	latitute real,
+	longitute real,
+	time_of_day integer
 );
 
 CREATE TABLE website(

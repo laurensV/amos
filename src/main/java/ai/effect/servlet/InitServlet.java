@@ -60,9 +60,9 @@ public class InitServlet extends DnaServlet {
         
         /* TODO: retrieve profiles instead of dummy profile */
         double profile_lat = 52.132633 , profile_long = 5.291266;
-        double profile_time = 1457181877;
+        double profile_time = 43200;
         double distance = this.distance(location.getLatitude(), location.getLongitude(), profile_lat, profile_long);
-        double timeDiff = Math.abs(profile_time % (24*3600) - visitor_time % (24*3600));
+        double timeDiff = Math.abs(profile_time - visitor_time % (24*3600));
         System.out.printf("distance %f\n", distance);
         System.out.printf("time difference %f\n", timeDiff);
         /* TODO: select best matching profile */
