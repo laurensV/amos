@@ -25,7 +25,7 @@ import ai.effect.servlet.StopServlet;
  */
 public class App {
     public static void main(String[] args) throws Exception {
-        Server server = new Server(7070);
+        Server server = new Server(7071);
         ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
         context.setContextPath("/dna");
         server.setHandler(context);
