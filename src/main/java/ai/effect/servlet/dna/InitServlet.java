@@ -1,4 +1,4 @@
-package ai.effect.servlet;
+package ai.effect.servlet.dna;
 
 import java.util.Date;
 
