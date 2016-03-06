@@ -23,7 +23,6 @@ public class Website {
         this.url = url;
         this.dna_settings = dna_settings;
         this.sql = sql;
-        String generatedColumns[] = {"id"};
         PreparedStatement stmt = this.sql.prepareStatement("INSERT INTO website (url, dna_settings) VALUES (?, ?) RETURNING id;");
 
         try {

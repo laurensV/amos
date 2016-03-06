@@ -11,7 +11,7 @@ $(document).ready(function() {
         },
         success: function(data) {
             console.log(data);
-            window.sessionId = data.session_id;
+            //window.sessionId = data.session_id;
             $.each(data.items, function(i, item) {
                 $.each(item.attributes, function(i, attr) {
                     $(item.id).css(attr.attribute, attr.value);

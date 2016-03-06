@@ -15,6 +15,15 @@ CREATE TABLE website(
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 CREATE TABLE dna(
 	id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-	profile_id integer REFERENCES profile (id),
-  website_id integer REFERENCES website (id)
+	profile_id integer,
+	-- profile_id integer REFERENCES profile (id),
+  	website_id integer REFERENCES website (id),
+  	dna json NOT NULL
+);
+
+CREATE TABLE dna_stats(
+	id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+	clicks integer,
+  	visits integer,
+  	av_time real
 );

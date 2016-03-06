@@ -3,8 +3,14 @@ package ai.effect.servlet.dna;
 import java.io.File;
 import java.io.IOException;
 import java.net.InetAddress;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+
+import org.postgresql.util.PGobject;
 
 import com.maxmind.db.CHMCache;
 import com.maxmind.geoip2.DatabaseReader;
@@ -16,6 +22,7 @@ import com.maxmind.geoip2.record.Location;
 import com.maxmind.geoip2.record.Postal;
 import com.maxmind.geoip2.record.Subdivision;
 
+import ai.effect.models.Website;
 import ai.effect.server.SqlHandler;
 
 
@@ -47,10 +54,24 @@ public class InitServlet extends DnaServlet {
         /* TODO: use siteId and profile to select DNA */
         int profileId = this.mapToProfile("77.175.185.162", unixTime);
         
+        PreparedStatement stmt = this.sql.prepareStatement("SELECT dna FROM dna WHERE profile_id="+profileId+" AND website_id="+siteId+";");
+        
+        String dna = "";
+        try {
+            ResultSet res = stmt.executeQuery();
+            
+            if ( res.next() ) {
+                dna = res.getString(1);
+            }
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        
         /* */
-
-        return "{\"session-id\": \"" + session.getId()
-                + "\", \"items\": [{\"id\": \".btn\", \"attributes\": [{\"attribute\": \"background-color\", \"value\": \"blue\"}]}]}";
+        return dna;
+        //return "{\"session-id\": \"" + session.getId()
+        //        + "\", \"items\": [{\"id\": \".btn\", \"attributes\": [{\"attribute\": \"background-color\", \"value\": \"blue\"}]}]}";
     }
     protected int mapToProfile(String visitor_IP, long visitor_time) {
         Location location = null;

@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.eclipse.jetty.http.HttpStatus;
 
+import ai.effect.models.DNA;
 import ai.effect.models.Website;
 import ai.effect.server.SqlHandler;
 import ai.effect.servlet.Servlet;
@@ -24,7 +25,7 @@ public class WebsiteServlet extends Servlet {
         String url = req.getParameter("url");
         String json = "{" +
                 "\"#btn\": {" +
-                "\"color\": {" +
+                "\"background-color\": {" +
                   "\"type\": \"color\"," +
                   "\"hue\": \"0;360\"," +
                   "\"saturation\": \"0;100\"," +
@@ -36,6 +37,9 @@ public class WebsiteServlet extends Servlet {
         int id = website.getId();
         File default_tracker = new File("js/default-tracker.js");
         File tracker = new File("js/tracker-"+id+".js");
+        
+        /* TODO: foreach profile add starting DNA */
+        new DNA(1, id, website.getSettings(), this.sql);
 
         try {
             Files.copy(default_tracker.toPath(), tracker.toPath(), StandardCopyOption.REPLACE_EXISTING);
