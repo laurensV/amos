@@ -2,6 +2,7 @@ package ai.effect.models;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import org.postgresql.util.PGobject;
@@ -22,7 +23,8 @@ public class Website {
         this.url = url;
         this.dna_settings = dna_settings;
         this.sql = sql;
-        PreparedStatement stmt = this.sql.prepareStatement("INSERT INTO website (url, dna_settings) VALUES (?, ?);");
+        String generatedColumns[] = {"id"};
+        PreparedStatement stmt = this.sql.prepareStatement("INSERT INTO website (url, dna_settings) VALUES (?, ?) RETURNING id;");
 
         try {
             PGobject jsonObject = new PGobject();
@@ -30,7 +32,11 @@ public class Website {
             jsonObject.setValue(dna_settings);
             stmt.setString(1, url);
             stmt.setObject(2, jsonObject);
-            stmt.executeUpdate();
+            ResultSet res = stmt.executeQuery();
+            
+            if ( res.next() ) {
+                this.id = res.getInt(1);
+            }
         } catch (SQLException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -71,5 +77,12 @@ public class Website {
      */
     public String getUrl() {
         return this.url;
+    }
+    
+    /**
+     * @return the id
+     */
+    public int getId() {
+        return this.id;
     }
 }
