@@ -10,7 +10,9 @@ import javax.servlet.DispatcherType;
 
 import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.Server;
+import org.eclipse.jetty.server.handler.ContextHandler;
 import org.eclipse.jetty.server.handler.ContextHandlerCollection;
+import org.eclipse.jetty.server.handler.ResourceHandler;
 import org.eclipse.jetty.servlet.FilterHolder;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
@@ -31,7 +33,7 @@ public class App {
      * Start the main application server
      */
     public static void main(String[] args) throws Exception {
-        Server server = new Server(7072);
+        Server server = new Server(7070);
         SqlHandler sqlHandler = new SqlHandler();
 
         ContextHandlerCollection contexts = new ContextHandlerCollection();
@@ -54,7 +56,22 @@ public class App {
 
         ServletContextHandler restContext = new RestService(sqlHandler);
         server.setHandler(restContext);
-        contexts.setHandlers(new Handler[] { context, restContext });
+        //1.Creating the resource handler
+        ResourceHandler resourceHandler= new ResourceHandler();
+        
+        //2.Setting Resource Base
+        resourceHandler.setResourceBase("js");
+
+        //3.Enabling Directory Listing
+        resourceHandler.setDirectoriesListed(true);
+        
+        //4.Setting Context Source 
+        ContextHandler jsContext= new ContextHandler("/js");
+    
+        //5.Attaching Handlers
+        jsContext.setHandler(resourceHandler);
+
+        contexts.setHandlers(new Handler[] { context, restContext, jsContext });
 
         server.setHandler(contexts);
         server.start();
