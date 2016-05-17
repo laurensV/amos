@@ -31,10 +31,10 @@ public class InitServlet extends DnaServlet {
         super(sql);
     }
 
-    protected String getResponse(HttpServletRequest req, String argument) {
+    protected String getResponse(HttpServletRequest req, String[] arguments) {
         HttpSession session = req.getSession(true);
         long unixTime = 0;
-        int siteId = Integer.parseInt(argument);
+        int siteId = Integer.parseInt(arguments[1]);
 
         if (session == null) {
             System.out.println("no session");

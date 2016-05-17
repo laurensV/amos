@@ -18,13 +18,13 @@ public abstract class DnaServlet extends Servlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String argument = "";
+        String[] arguments = null;
         resp.setStatus(HttpStatus.OK_200);
         /* TODO: Security checks for user input argument */
         if (req.getPathInfo() != null) {
-            argument = req.getPathInfo().split("/")[1];
+            arguments = req.getPathInfo().split("/");
         }
-        String response = this.getResponse(req, argument);
+        String response = this.getResponse(req, arguments);
         resp.getWriter().println(response);
     }
 
@@ -33,5 +33,5 @@ public abstract class DnaServlet extends Servlet {
      * 
      * @return
      */
-    protected abstract String getResponse(HttpServletRequest req, String argument);
+    protected abstract String getResponse(HttpServletRequest req, String[] argument);
 }

@@ -18,7 +18,7 @@ import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 import org.eclipse.jetty.servlets.CrossOriginFilter;
 
-import ai.effect.servlet.dna.ClickServlet;
+import ai.effect.servlet.dna.GoalServlet;
 import ai.effect.servlet.dna.InitServlet;
 import ai.effect.servlet.dna.StartServlet;
 import ai.effect.servlet.dna.StopServlet;
@@ -50,7 +50,7 @@ public class App {
 
 
         context.addServlet(new ServletHolder(new InitServlet(sqlHandler)), "/init/*");
-        context.addServlet(new ServletHolder(new ClickServlet(sqlHandler)), "/click/*");
+        context.addServlet(new ServletHolder(new GoalServlet(sqlHandler)), "/goal/*");
         context.addServlet(new ServletHolder(new StartServlet(sqlHandler)), "/start/*");
         context.addServlet(new ServletHolder(new StopServlet(sqlHandler)), "/stop/*");
 

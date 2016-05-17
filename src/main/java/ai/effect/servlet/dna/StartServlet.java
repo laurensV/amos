@@ -12,7 +12,7 @@ public class StartServlet extends DnaServlet {
         super(sql);
     }
 
-    protected String getResponse(HttpServletRequest req, String argument) {
+    protected String getResponse(HttpServletRequest req, String[] arguments) {
         HttpSession session = req.getSession(false);
 
         if (session == null) {
