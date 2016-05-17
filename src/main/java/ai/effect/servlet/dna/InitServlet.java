@@ -35,40 +35,60 @@ public class InitServlet extends DnaServlet {
         HttpSession session = req.getSession(true);
         long unixTime = 0;
         int siteId = Integer.parseInt(argument);
-        String visitor_IP = req.getRemoteAddr();
+
         if (session == null) {
             System.out.println("no session");
+            return "";
         } else {
-            unixTime = (System.currentTimeMillis() / 1000L);
-            session.setAttribute("created", unixTime);
-            session.setAttribute("ip", visitor_IP);
+            String uuid = (String) session.getAttribute("phenotype_uuid");
+            PreparedStatement stmt;
+            int profileId;
+            
             session.setAttribute("start", "");
             session.setAttribute("stop", "");
+            
+            /* check if this is an existing session*/
+            if(uuid != null){
+                profileId = (Integer) session.getAttribute("profile_id");
+                stmt = this.sql.prepareStatement("SELECT id, phenotype FROM individual WHERE id='"+uuid+"';");
+            } else {
+                /* new session */
+                unixTime = (System.currentTimeMillis() / 1000L);
+                session.setAttribute("created", unixTime);
+                String visitor_IP = req.getRemoteAddr();
+                session.setAttribute("ip", visitor_IP);
+                /* TODO: use visitor IP instead of dummy IP*/
+                profileId = this.mapToProfile("77.175.185.162", unixTime);
+                session.setAttribute("profile_id", profileId);
+                /* TODO: hangs sometimes on the prepareStatement */
+                stmt = this.sql.prepareStatement("SELECT id, phenotype FROM individual WHERE profile_id="+profileId+" AND website_id="+siteId+" AND generation=((select generation FROM website WHERE id="+siteId+")) ORDER BY RANDOM() LIMIT 1;");
+            }
+            
+            String phenotype = "";
+            try {
+                ResultSet res = stmt.executeQuery();
+
+                if ( res.next() ) {
+                    uuid = res.getString(1);
+                    session.setAttribute("phenotype_uuid", uuid);
+                    phenotype = res.getString(2);
+                }
+            } catch (SQLException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
             System.out.println("Session = " + session.getId());
             System.out.println("Created = " + session.getAttribute("created"));
             System.out.println("Ip = " + session.getAttribute("ip"));
             System.out.println("Start = " + session.getAttribute("start"));
             System.out.println("Stop = " + session.getAttribute("stop"));
+            System.out.println("Profile id = " + session.getAttribute("profile_id"));
+            System.out.println("Phenotype uuid = " + session.getAttribute("phenotype_uuid"));
+
+            return phenotype;
+            //return "{\"session-id\": \"" + session.getId()
+            //        + "\", \"items\": [{\"id\": \".btn\", \"attributes\": [{\"attribute\": \"background-color\", \"value\": \"blue\"}]}]}";
         }
-        /* TODO: use visitor IP instead of dummy IP*/
-        int profileId = this.mapToProfile("77.175.185.162", unixTime);
-        
-        /* TODO: hangs sometimes on the sql statement */
-        PreparedStatement stmt = this.sql.prepareStatement("SELECT phenotype FROM individual WHERE profile_id="+profileId+" AND website_id="+siteId+" AND generation=((select generation FROM website WHERE id="+siteId+")) ORDER BY RANDOM() LIMIT 1;");
-        
-        String phenotype = "";
-        try {
-            ResultSet res = stmt.executeQuery();
-            if ( res.next() ) {
-                phenotype = res.getString(1);
-            }
-        } catch (SQLException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        return phenotype;
-        //return "{\"session-id\": \"" + session.getId()
-        //        + "\", \"items\": [{\"id\": \".btn\", \"attributes\": [{\"attribute\": \"background-color\", \"value\": \"blue\"}]}]}";
     }
     protected int mapToProfile(String visitor_IP, long visitor_time) {
         Location location = null;
