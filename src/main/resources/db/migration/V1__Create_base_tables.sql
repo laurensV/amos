@@ -26,6 +26,6 @@ CREATE TABLE individual(
 CREATE TABLE individual_goal(
     id serial PRIMARY KEY,
 	individual_id UUID REFERENCES individual (id),
-	name integer,
+	name varchar(40) NOT NULL CHECK (name <> ''),
   	score integer
 );

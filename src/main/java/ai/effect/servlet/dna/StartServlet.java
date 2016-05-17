@@ -17,6 +17,7 @@ public class StartServlet extends DnaServlet {
 
         if (session == null) {
             System.out.println("no session");
+            return "{\"code\": \"ERROR\"}";
         } else {
             session.setAttribute("start", new Date());
             System.out.println("Session = " + session.getId());
