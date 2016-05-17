@@ -23,7 +23,7 @@ public class Website {
         this.url = url;
         this.dna_settings = dna_settings;
         this.sql = sql;
-        PreparedStatement stmt = this.sql.prepareStatement("INSERT INTO website (url, dna_settings) VALUES (?, ?) RETURNING id;");
+        PreparedStatement stmt = this.sql.prepareStatement("INSERT INTO website (url, dna_settings, generation) VALUES (?, ?, 1) RETURNING id;");
 
         try {
             PGobject jsonObject = new PGobject();
@@ -67,7 +67,7 @@ public class Website {
     /**
      * @return the name
      */
-    public String getSettings() {
+    public String getDna() {
         return this.dna_settings;
     }
 

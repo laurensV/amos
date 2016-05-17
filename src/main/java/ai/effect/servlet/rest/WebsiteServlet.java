@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.eclipse.jetty.http.HttpStatus;
 
-import ai.effect.models.DNA;
+import ai.effect.models.Individual;
 import ai.effect.models.Website;
 import ai.effect.server.SqlHandler;
 import ai.effect.servlet.Servlet;
@@ -39,7 +39,7 @@ public class WebsiteServlet extends Servlet {
         File tracker = new File("js/tracker-"+id+".js");
         
         /* TODO: foreach profile add starting DNA */
-        new DNA(1, id, website.getSettings(), this.sql);
+        new Individual(1, id, website.getDna(), this.sql);
 
         try {
             Files.copy(default_tracker.toPath(), tracker.toPath(), StandardCopyOption.REPLACE_EXISTING);

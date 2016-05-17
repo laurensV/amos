@@ -51,26 +51,22 @@ public class InitServlet extends DnaServlet {
             System.out.println("Stop = " + session.getAttribute("stop"));
         }
         /* TODO: use visitor IP instead of dummy IP*/
-        /* TODO: use siteId and profile to select DNA */
         int profileId = this.mapToProfile("77.175.185.162", unixTime);
         
         /* TODO: hangs sometimes on the sql statement */
-        PreparedStatement stmt = this.sql.prepareStatement("SELECT dna FROM dna WHERE profile_id="+profileId+" AND website_id="+siteId+";");
+        PreparedStatement stmt = this.sql.prepareStatement("SELECT phenotype FROM individual WHERE profile_id="+profileId+" AND website_id="+siteId+" AND generation=((select generation FROM website WHERE id="+siteId+")) ORDER BY RANDOM() LIMIT 1;");
         
-        String dna = "";
+        String phenotype = "";
         try {
             ResultSet res = stmt.executeQuery();
-            
             if ( res.next() ) {
-                dna = res.getString(1);
+                phenotype = res.getString(1);
             }
         } catch (SQLException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        System.out.println("test");
-        /* */
-        return dna;
+        return phenotype;
         //return "{\"session-id\": \"" + session.getId()
         //        + "\", \"items\": [{\"id\": \".btn\", \"attributes\": [{\"attribute\": \"background-color\", \"value\": \"blue\"}]}]}";
     }
