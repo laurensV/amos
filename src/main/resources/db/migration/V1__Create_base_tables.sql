@@ -23,9 +23,9 @@ CREATE TABLE individual(
     generation integer
 );
 
-CREATE TABLE dna_stats(
-	id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-	clicks integer,
-  	visits integer,
-  	av_time real
+CREATE TABLE individual_goal(
+    id serial PRIMARY KEY,
+	individual_id UUID REFERENCES individual (id),
+	name integer,
+  	score integer
 );

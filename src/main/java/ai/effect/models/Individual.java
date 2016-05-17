@@ -72,24 +72,6 @@ public class Individual {
             stmt.setInt(4, this.generation);
             ResultSet res = stmt.executeQuery();
             
-            jsonObject = new PGobject();
-            jsonObject.setType("json");
-            jsonObject.setValue(this.phenotype);
-            stmt.setInt(1, this.profile_id);
-            stmt.setInt(2, this.website_id);
-            stmt.setObject(3, jsonObject);
-            stmt.setInt(4, this.generation);
-            res = stmt.executeQuery();
-            
-            jsonObject = new PGobject();
-            jsonObject.setType("json");
-            jsonObject.setValue(this.phenotype);
-            stmt.setInt(1, this.profile_id);
-            stmt.setInt(2, this.website_id);
-            stmt.setObject(3, jsonObject);
-            stmt.setInt(4, 0);
-            res = stmt.executeQuery();
-            
             if ( res.next() ) {
                 this.id = res.getString(1);
             }
