@@ -22,21 +22,59 @@ public class Goal {
 
 
     public Goal(String individual_id, String name, int score, SqlHandler sql) {
+        int oldScore;
         this.individual_id = individual_id;
         this.name = name;
         this.score = score;
         this.sql = sql;
+
         
-        PreparedStatement stmt = this.sql.prepareStatement("INSERT INTO individual_goal (individual_id, name, score) VALUES (?, ?, ?) RETURNING id;");
+        PreparedStatement stmt = this.sql.prepareStatement("SELECT score FROM individual_goal WHERE individual_id = ? AND name = ? ;");
 
         try {
             stmt.setObject(1, this.individual_id, Types.OTHER);
             stmt.setString(2, this.name);
-            stmt.setInt(3, this.score);
+
             ResultSet res = stmt.executeQuery();
             
-            if ( res.next() ) {
-                this.id = res.getInt(1);
+            /* check if there already exist a score for this goal */
+            if (res.next()) {
+                oldScore = res.getInt(1);
+                this.score += oldScore;
+                PreparedStatement stmt2 = this.sql.prepareStatement("UPDATE individual_goal SET score = ? WHERE individual_id = ? AND name = ? RETURNING id;");
+
+                try {
+                    stmt2.setInt(1, this.score);
+                    stmt2.setObject(2, this.individual_id, Types.OTHER);
+                    stmt2.setString(3, this.name);
+
+                    ResultSet res2 = stmt2.executeQuery();
+                    
+                    if (res2.next()) {
+                        this.id = res2.getInt(1);
+                    }
+                } catch (SQLException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+                return;
+            }
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        
+        /* this is a new goal for this individual, create new row */
+        PreparedStatement stmt3 = this.sql.prepareStatement("INSERT INTO individual_goal (individual_id, name, score) VALUES (?, ?, ?) RETURNING id;");
+
+        try {
+            stmt3.setObject(1, this.individual_id, Types.OTHER);
+            stmt3.setString(2, this.name);
+            stmt3.setInt(3, this.score);
+            ResultSet res3 = stmt3.executeQuery();
+            
+            if ( res3.next() ) {
+                this.id = res3.getInt(1);
             }
         } catch (SQLException e) {
             // TODO Auto-generated catch block
