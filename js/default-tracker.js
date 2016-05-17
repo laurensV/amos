@@ -1,5 +1,5 @@
 window.sessionId = -1;
-api_url = "http://iavconcepts.com:7070"
+api_url = "http://localhost:7070"
 $(document).ready(function() {
     var requestUrl = api_url + "/dna/init/" + window.site_id;
     $.ajax({
@@ -17,7 +17,8 @@ $(document).ready(function() {
                     $(item.id).css(attr.attribute, attr.value);
                 });
                 $(item.id).click(function() {
-                    goal("click-"+item.id, 1)
+                    goal("click-"+$(this).attr('id'), 1)
+
                 });
             });
         },

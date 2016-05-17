@@ -42,7 +42,7 @@ public class Individual {
                 if(attribute.getString("type").equals("color")) {
                     /*TODO: get starting values */
                     String value = "hsl(107, 100%, 50%)";
-                    phenotype += "{\"attribute\": \""+element_name+"\", \"value\": \""+value+"\"}, "; 
+                    phenotype += "{\"attribute\": \""+attribute_name+"\", \"value\": \""+value+"\"}, "; 
                 }
             }
             phenotype = phenotype.substring(0, phenotype.length() - 2);
