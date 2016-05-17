@@ -16,47 +16,20 @@ $(document).ready(function() {
                 $.each(item.attributes, function(i, attr) {
                     $(item.id).css(attr.attribute, attr.value);
                 });
-                // $(item.id).click(function() {
-                //     var requestUrl = api_url + "/dna/click/" + window.sessionId;
-                //     $.ajax({
-                //         url: requestUrl,
-                //         dataType: 'json',
-                //         xhrFields: {
-                //             withCredentials: true
-                //         },
-                //         success: function(data) {
-                //             console.log(data);
-                //         }
-                //     });
-                // });
+                $(item.id).click(function() {
+                    goal("click-"+item.id, 1)
+                });
             });
         },
         error: function(xhr, textStatus, errorThrown){
-           alert('init request failed');
-        }
-    });
-}); 
-$(window).load(function() {
-    var requestUrl = api_url + "/dna/start/" + window.site_id;
-    $.ajax({
-        url: requestUrl,
-        dataType: 'json',
-        xhrFields: {
-              withCredentials: true
+           console.log('init request failed');
         },
-        success: function(data) {
-            console.log(data);
-        },
-        error: function(xhr, textStatus, errorThrown){
-           alert('start request failed');
-        }
+        timeout: 3000 // sets timeout to 3 seconds
     });
 });
-$(window).unload(function(){
-    var requestUrl = api_url + "/dna/stop/" + window.site_id;
-    /* synchronous call, so browser has to wait for call to finish before exiting */
+function goal(name, score){
+    var requestUrl = api_url + "/dna/goal/" + name + "/" +score;
     $.ajax({
-        async:false,
         url: requestUrl,
         dataType: 'json',
         xhrFields: {
@@ -66,8 +39,44 @@ $(window).unload(function(){
             console.log(data);
         },
         error: function(xhr, textStatus, errorThrown){
-           alert('stop request failed');
-        }
-    });
+           console.log('goal request failed');
+        },
+        timeout: 3000 // sets timeout to 3 seconds
+    });    
+}
+$(window).load(function() {
+    goal("visit", 1);
+    // var requestUrl = api_url + "/dna/start/" + window.site_id;
+    // $.ajax({
+    //     url: requestUrl,
+    //     dataType: 'json',
+    //     xhrFields: {
+    //           withCredentials: true
+    //     },
+    //     success: function(data) {
+    //         console.log(data);
+    //     },
+    //     error: function(xhr, textStatus, errorThrown){
+    //        alert('start request failed');
+    //     }
+    // });
+});
+$(window).unload(function(){
+    // var requestUrl = api_url + "/dna/stop/" + window.site_id;
+    // /* synchronous call, so browser has to wait for call to finish before exiting */
+    // $.ajax({
+    //     async:false,
+    //     url: requestUrl,
+    //     dataType: 'json',
+    //     xhrFields: {
+    //           withCredentials: true
+    //     },
+    //     success: function(data) {
+    //         console.log(data);
+    //     },
+    //     error: function(xhr, textStatus, errorThrown){
+    //        alert('stop request failed');
+    //     }
+    // });
 });
 window.site_id = 
