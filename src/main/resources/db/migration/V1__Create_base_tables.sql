@@ -1,6 +1,6 @@
 CREATE TABLE profile(
 	id serial PRIMARY KEY,
-	name varchar(40) NOT NULL CHECK (name <> ''),
+	name varchar(64) NOT NULL CHECK (name <> ''),
 	latitude real,
 	longitude real,
 	time_of_day integer
@@ -26,6 +26,7 @@ CREATE TABLE individual(
 CREATE TABLE individual_goal(
     id serial PRIMARY KEY,
 	individual_id UUID REFERENCES individual (id),
-	name varchar(40) NOT NULL CHECK (name <> ''),
+	name varchar(64) NOT NULL CHECK (name <> ''),
+    session varchar(64) NOT NULL CHECK (name <> ''),
   	score integer
 );

@@ -19,7 +19,6 @@ public class Individual {
     private String id;
     private SqlHandler sql;
 
-
     public Individual(int profile_id, int website_id, String json, SqlHandler sql) {
         // TODO Auto-generated constructor stub
         JSONObject settings = new JSONObject(json);
@@ -59,7 +58,7 @@ public class Individual {
         this.website_id = website_id;
         this.generation = 1;
         this.sql = sql;
-        /* TODO: insert multiple individuals */
+        /* TODO: create population (insert multiple individuals) */
         PreparedStatement stmt = this.sql.prepareStatement("INSERT INTO individual (profile_id, website_id, phenotype, generation) VALUES (?, ?, ?, ?) RETURNING id;");
 
         try {
