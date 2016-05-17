@@ -54,6 +54,7 @@ public class InitServlet extends DnaServlet {
         /* TODO: use siteId and profile to select DNA */
         int profileId = this.mapToProfile("77.175.185.162", unixTime);
         
+        /* TODO: hangs sometimes on the sql statement */
         PreparedStatement stmt = this.sql.prepareStatement("SELECT dna FROM dna WHERE profile_id="+profileId+" AND website_id="+siteId+";");
         
         String dna = "";
@@ -67,7 +68,7 @@ public class InitServlet extends DnaServlet {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        
+        System.out.println("test");
         /* */
         return dna;
         //return "{\"session-id\": \"" + session.getId()
