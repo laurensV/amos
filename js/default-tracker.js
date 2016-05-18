@@ -17,7 +17,7 @@ $(document).ready(function() {
                     $(item.id).css(attr.attribute, attr.value);
                 });
                 $(item.id).click(function() {
-                    goal("click-"+$(this).attr('id'), 1)
+                    goal("click-"+$(this).attr('id'), 10)
 
                 });
             });
