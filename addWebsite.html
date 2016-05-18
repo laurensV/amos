@@ -1,0 +1,167 @@
+<html>
+    <head>
+        <title>
+            Add website
+        </title>
+        <link href="https://fonts.googleapis.com/css?family=Lato:100" rel="stylesheet" type="text/css">
+            <style>
+                html, body {
+            height: 100%;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            display: table;
+            font-weight: 100;
+            font-family: 'Lato';
+            background-color: #F9F9F9;
+            font-weight: bold;
+        }
+
+        .container {
+            text-align: center;
+            display: table-cell;
+            vertical-align: middle;
+        }
+
+        .content {
+            text-align: center;
+            display: inline-block;
+        }
+
+        .title {
+            font-size: 96px;
+            cursor:pointer;
+            font-weight: normal;
+        }
+        #elements-rows{
+            text-align: left;
+        }
+        #add-element{
+            float:right;
+        }
+            </style>
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
+            <script type="text/javascript">
+                    function addProperty(el){
+                        $prow.clone().insertBefore(el);
+                    }
+                    function addElement(el){
+                        $erow.clone().insertBefore(el);
+                    }
+
+
+                $( document ).ready(function() {
+                    $erow = $('.element-row').clone();
+                    $prow = $('.property-row').clone();
+
+                    $.fn.serializeObject = function()
+                    {
+                        var o = {};
+                        var element = "";
+                        var property = "";
+                        var a = this.serializeArray();
+                        $.each(a, function() {
+                            if(this.name == "element"){
+                                o[this.value] = {};
+                                element = this.value;
+                            } else if(this.name == "property"){
+                                o[element][this.value] = {};
+                                property = this.value;
+                            } else if(this.name.split(".")[0] == "property"){
+                                o[element][property][this.name.split(".")[1]] = this.value;
+                            }
+                        });
+                        return o;
+                    };
+                    $('form').submit(function() {
+                        var json = JSON.stringify($(this).serializeObject());
+                        $.ajax({
+                          url: $(this).attr("action"),
+                          type: 'GET',       
+                          xhrFields: {
+                              withCredentials: true
+                          },
+                          data: { json:json, url:$(this).find("input[name=url]").val()},
+                          timeout: 3000,
+                          success: function(result) {
+                            alert(result);
+                          }
+                        });
+                        return false;
+                    });
+
+                    $('#elements-rows').on('change', 'select.type', function (e) {
+                        var html = "";
+                        if(this.value == "color"){
+                            html = '<label>Hue range:<input name="property.hue" type="text" width="50"/></label>';
+                            html += '<label>Saturation range:<input name="property.saturation" type="text" width="50"/></label>';
+                            html += '<label>Lightness range:<input name="property.lightness" type="text" width="50"/></label>';
+                        }
+                        if(this.value == "text"){
+                            html = '<label>Text values (seperated by semi-colon):<input name="property.values" type="text" width="50"/></label>';
+                        }
+                        if(this.value == "number"){
+                            html = '<label>Number range:<input name="property.numrange" type="text" width="50"/></label>';
+                        }
+                        $(this).parent().parent().find("span.typefields").html(html);
+                    });
+                });
+            </script>
+        </link>
+    </head>
+    <body>
+        <div class="container">
+            <div class="content">
+                <div class="title" id="btn">
+                    effect.ai
+                </div>
+                <form action="http://localhost:7070/api/website/add" method="post">
+                    Website URL:
+                    <input name="url" type="text">
+                        <br>
+                            <fieldset id="elements-rows">
+                                <legend>
+                                    Elements
+                                </legend>
+                                <div class="element-row">
+                                    <label>
+                                        ID:
+                                        <input name="element" type="text" width="50"/>
+                                    </label>
+                                    <fieldset class="properties-rows">
+                                        <legend>
+                                            Properties
+                                        </legend>
+                                        <div class="property-row">
+                                            <label>
+                                                Property name:
+                                                <input name="property" type="text" width="50"/>
+                                            </label>
+                                            <label>
+                                                Property type:
+                                                  <select class="type" name="property.type">
+                                                    <option value="">--Pick a type--</option>
+                                                    <option value="color">Color</option>
+                                                    <option value="text">Text</option>
+                                                    <option value="number">Number</option>
+                                                  </select>
+                                            </label>
+                                            <span class= "typefields">
+                                            </span>
+                                        </div>
+                                        <input class="add-property" name="add-property" type="button" onclick="addProperty(this);" value="Add new property"/>
+                                    </fieldset>
+                                </div>
+                                <input id="add-element" name="add-element" type="button" onclick="addElement(this);" value="Add new element"/>
+                            </fieldset>
+                            <input type="submit" value="Add website"/>
+                        </br>
+                    </input>
+                </form>
+            </div>
+        </div>
+    </body>
+</html>
