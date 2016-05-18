@@ -23,16 +23,18 @@ public class WebsiteServlet extends Servlet {
 
     public void doPost(HttpServletRequest req, HttpServletResponse resp) {
         String url = req.getParameter("url");
-        String json = "{" +
-                "\"#btn\": {" +
-                "\"background-color\": {" +
-                  "\"type\": \"color\"," +
-                  "\"hue\": \"0;360\"," +
-                  "\"saturation\": \"0;100\"," +
-                  "\"lightness\": \"0;100\"" +
-                "}" +
-              "}" +
-            "}";
+        String json = req.getParameter("json");
+//        String json2 = "{" +
+//                "\"#btn\": {" +
+//                "\"background-color\": {" +
+//                  "\"type\": \"color\"," +
+//                  "\"hue\": \"0;360\"," +
+//                  "\"saturation\": \"0;100\"," +
+//                  "\"lightness\": \"0;100\"" +
+//                "}" +
+//              "}" +
+//            "}";
+//        System.out.println(json2);
         Website website = new Website(url, json, this.sql);
         int id = website.getId();
         File default_tracker = new File("js/default-tracker.js");
