@@ -80,7 +80,7 @@
                         var json = JSON.stringify($(this).serializeObject());
                         $.ajax({
                           url: $(this).attr("action"),
-                          type: 'GET',       
+                          type: 'POST,       
                           xhrFields: {
                               withCredentials: true
                           },
