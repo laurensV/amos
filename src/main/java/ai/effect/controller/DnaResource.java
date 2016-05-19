@@ -42,75 +42,75 @@ import ai.effect.models.Individual;
 
 @Path("/dna")
 public class DnaResource {
-		@Context SqlHandler sql;
-		@Context HttpServletRequest req;
+    @Context SqlHandler sql;
+    @Context HttpServletRequest req;
 
-		@GET @Path("/init/{siteId: [0-9]+}")
-		public String init(@PathParam("siteId") int siteId) {
-				HttpSession session = req.getSession();
-				long unixTime = 0;
+    @GET @Path("/init/{siteId: [0-9]+}")
+    public String init(@PathParam("siteId") int siteId) {
+        HttpSession session = req.getSession();
+        long unixTime = 0;
 
-				session.setAttribute("start", "");
-				session.setAttribute("stop", "");
+        session.setAttribute("start", "");
+        session.setAttribute("stop", "");
 
-				if (session == null) {
-						System.out.println("no session");
-						return "";
-				} else {
-						String uuid = (String) session.getAttribute("phenotype_uuid");
-						PreparedStatement stmt;
-						int profileId;
-						
-						session.setAttribute("start", "");
-						session.setAttribute("stop", "");
+        if (session == null) {
+            System.out.println("no session");
+            return "";
+        } else {
+            String uuid = (String) session.getAttribute("phenotype_uuid");
+            PreparedStatement stmt;
+            int profileId;
+            
+            session.setAttribute("start", "");
+            session.setAttribute("stop", "");
 
 
-						/* check if this is an existing session*/
-						if(uuid != null){
-								profileId = (Integer) session.getAttribute("profile_id");
-								stmt = this.sql.prepareStatement("SELECT id, phenotype FROM individual WHERE id='"+uuid+"';");
-						} else {
-								/* new session */
-								unixTime = (System.currentTimeMillis() / 1000L);
-								session.setAttribute("created", unixTime);
-								String visitor_IP = req.getRemoteAddr();
-								session.setAttribute("ip", visitor_IP);
-								/* TODO: use visitor IP instead of dummy IP*/
-								profileId = this.mapToProfile("77.175.185.162", unixTime);
-								session.setAttribute("profile_id", profileId);
-								/* TODO: hangs sometimes on the prepareStatement */
-								stmt = this.sql.prepareStatement("SELECT id, phenotype FROM individual WHERE profile_id="+profileId+" AND website_id="+siteId+" AND generation=((select generation FROM website WHERE id="+siteId+")) ORDER BY RANDOM() LIMIT 1;");
-						}
+            /* check if this is an existing session*/
+            if(uuid != null){
+                profileId = (Integer) session.getAttribute("profile_id");
+                stmt = this.sql.prepareStatement("SELECT id, phenotype FROM individual WHERE id='"+uuid+"';");
+            } else {
+                /* new session */
+                unixTime = (System.currentTimeMillis() / 1000L);
+                session.setAttribute("created", unixTime);
+                String visitor_IP = req.getRemoteAddr();
+                session.setAttribute("ip", visitor_IP);
+                /* TODO: use visitor IP instead of dummy IP*/
+                profileId = this.mapToProfile("77.175.185.162", unixTime);
+                session.setAttribute("profile_id", profileId);
+                /* TODO: hangs sometimes on the prepareStatement */
+                stmt = this.sql.prepareStatement("SELECT id, phenotype FROM individual WHERE profile_id="+profileId+" AND website_id="+siteId+" AND generation=((select generation FROM website WHERE id="+siteId+")) ORDER BY RANDOM() LIMIT 1;");
+            }
 
-						String phenotype = "";
-						try {
-								ResultSet res = stmt.executeQuery();
+            String phenotype = "";
+            try {
+                ResultSet res = stmt.executeQuery();
 
-								if ( res.next() ) {
-										uuid = res.getString(1);
-										session.setAttribute("phenotype_uuid", uuid);
-										phenotype = res.getString(2);
-								}
-						} catch (SQLException e) {
-								// TODO Auto-generated catch block
-								e.printStackTrace();
-						}
-						System.out.println("Session = " + session.getId());
-						System.out.println("Created = " + session.getAttribute("created"));
-						System.out.println("Ip = " + session.getAttribute("ip"));
-						System.out.println("Start = " + session.getAttribute("start"));
-						System.out.println("Stop = " + session.getAttribute("stop"));
-						System.out.println("Profile id = " + session.getAttribute("profile_id"));
-						System.out.println("Phenotype uuid = " + session.getAttribute("phenotype_uuid"));
+                if ( res.next() ) {
+                    uuid = res.getString(1);
+                    session.setAttribute("phenotype_uuid", uuid);
+                    phenotype = res.getString(2);
+                }
+            } catch (SQLException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+            System.out.println("Session = " + session.getId());
+            System.out.println("Created = " + session.getAttribute("created"));
+            System.out.println("Ip = " + session.getAttribute("ip"));
+            System.out.println("Start = " + session.getAttribute("start"));
+            System.out.println("Stop = " + session.getAttribute("stop"));
+            System.out.println("Profile id = " + session.getAttribute("profile_id"));
+            System.out.println("Phenotype uuid = " + session.getAttribute("phenotype_uuid"));
 
-						return phenotype;
-				}
-		}
+            return phenotype;
+        }
+    }
 
-		@GET @Path("/start")
-		@Produces(MediaType.APPLICATION_JSON)
-		public String start() {
-				HttpSession session = req.getSession(false);
+    @GET @Path("/start")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String start() {
+        HttpSession session = req.getSession(false);
         if (session == null) {
             System.out.println("no session");
             return "{\"code\": \"ERROR\"}";
@@ -123,43 +123,43 @@ public class DnaResource {
             System.out.println("Stop = " + session.getAttribute("stop"));
         }
         return "{\"code\": \"OK\"}";
-		}
+    }
 
-		@GET @Path("/stop")
-		@Produces(MediaType.APPLICATION_JSON)
-		public String stop() {
-				HttpSession session = req.getSession(false);
+    @GET @Path("/stop")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String stop() {
+        HttpSession session = req.getSession(false);
 
-				if (session == null) {
-						System.out.println("no session");
-				} else {
-						session.setAttribute("stop", new Date());
-						System.out.println("Session = " + session.getId());
-						System.out.println("Created = " + session.getAttribute("created"));
-						System.out.println("Ip = " + session.getAttribute("ip"));
-						System.out.println("Start = " + session.getAttribute("start"));
-						System.out.println("Stop = " + session.getAttribute("stop"));
-				}
-				return "{\"code\": \"OK\"}";
-		}
+        if (session == null) {
+            System.out.println("no session");
+        } else {
+            session.setAttribute("stop", new Date());
+            System.out.println("Session = " + session.getId());
+            System.out.println("Created = " + session.getAttribute("created"));
+            System.out.println("Ip = " + session.getAttribute("ip"));
+            System.out.println("Start = " + session.getAttribute("start"));
+            System.out.println("Stop = " + session.getAttribute("stop"));
+        }
+        return "{\"code\": \"OK\"}";
+    }
 
-		@GET @Path("/goal/{name}/{score}")
-		@Produces(MediaType.APPLICATION_JSON)
-		public String goal(@PathParam("name") String name, @PathParam("score") int score) {
-				HttpSession session = req.getSession(false);
-				if (session == null) {
-						System.out.println("no session");
-						return "{\"code\": \"ERROR\"}";
-				} else {
-						String session_id = session.getId();
-						String uuid = (String) session.getAttribute("phenotype_uuid");
-						System.out.println("Phenotype: " + uuid);
-						System.out.println("Name: " + name);
-						System.out.println("Score " + score);
-						new Goal(uuid, name, session_id, score, this.sql);
-				}
-				return "{\"code\": \"OK\"}";
-		}
+    @GET @Path("/goal/{name}/{score}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String goal(@PathParam("name") String name, @PathParam("score") int score) {
+        HttpSession session = req.getSession(false);
+        if (session == null) {
+            System.out.println("no session");
+            return "{\"code\": \"ERROR\"}";
+        } else {
+            String session_id = session.getId();
+            String uuid = (String) session.getAttribute("phenotype_uuid");
+            System.out.println("Phenotype: " + uuid);
+            System.out.println("Name: " + name);
+            System.out.println("Score " + score);
+            new Goal(uuid, name, session_id, score, this.sql);
+        }
+        return "{\"code\": \"OK\"}";
+    }
 
     protected int mapToProfile(String visitor_IP, long visitor_time) {
         Location location = null;
@@ -226,20 +226,20 @@ public class DnaResource {
         // Replace "city" with the appropriate method for your database, e.g.,
         // "country".
         CityResponse response = reader.city(ipAddress);
-//        Country country = response.getCountry();
-//        System.out.println(country.getIsoCode());            // 'US'
-//        System.out.println(country.getName());               // 'United States'
-//        System.out.println(country.getNames().get("zh-CN")); // '美国'
-//
-//        Subdivision subdivision = response.getMostSpecificSubdivision();
-//        System.out.println(subdivision.getName());    // 'Minnesota'
-//        System.out.println(subdivision.getIsoCode()); // 'MN'
-//
-//        City city = response.getCity();
-//        System.out.println(city.getName()); // 'Minneapolis'
-//
-//        Postal postal = response.getPostal();
-//        System.out.println(postal.getCode()); // '55455'
+        //        Country country = response.getCountry();
+        //        System.out.println(country.getIsoCode());            // 'US'
+        //        System.out.println(country.getName());               // 'United States'
+        //        System.out.println(country.getNames().get("zh-CN")); // '美国'
+        //
+        //        Subdivision subdivision = response.getMostSpecificSubdivision();
+        //        System.out.println(subdivision.getName());    // 'Minnesota'
+        //        System.out.println(subdivision.getIsoCode()); // 'MN'
+        //
+        //        City city = response.getCity();
+        //        System.out.println(city.getName()); // 'Minneapolis'
+        //
+        //        Postal postal = response.getPostal();
+        //        System.out.println(postal.getCode()); // '55455'
 
         return response.getLocation();
     }
