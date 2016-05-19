@@ -77,10 +77,11 @@
                         return o;
                     };
                     $('form').submit(function() {
+                    alert('su');
                         var json = JSON.stringify($(this).serializeObject());
                         $.ajax({
                           url: $(this).attr("action"),
-                          type: 'GET',       
+                          type: 'POST',       
                           xhrFields: {
                               withCredentials: true
                           },

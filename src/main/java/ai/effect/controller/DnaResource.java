@@ -1,16 +1,18 @@
-package ai.effect.servlet.dna;
+package ai.effect.controller;
 
 import java.io.File;
 import java.io.IOException;
 import java.net.InetAddress;
+import java.util.Date;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
-import org.postgresql.util.PGobject;
+import ai.effect.datasource.SqlHandler;
 
 import com.maxmind.db.CHMCache;
 import com.maxmind.geoip2.DatabaseReader;
@@ -22,19 +24,34 @@ import com.maxmind.geoip2.record.Location;
 import com.maxmind.geoip2.record.Postal;
 import com.maxmind.geoip2.record.Subdivision;
 
-import ai.effect.models.Website;
-import ai.effect.server.SqlHandler;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.FormParam;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.MediaType;
+import javax.servlet.http.HttpSession;
+import javax.servlet.http.HttpServletRequest;
 
+import ai.effect.models.Goal;
+import ai.effect.models.Individual;
 
-public class InitServlet extends DnaServlet {
-    public InitServlet(SqlHandler sql) {
-        super(sql);
-    }
+@Path("/dna")
+public class DnaResource {
+    @Context SqlHandler sql;
+    @Context HttpServletRequest req;
 
-    protected String getResponse(HttpServletRequest req, String[] arguments) {
-        HttpSession session = req.getSession(true);
+    @GET @Path("/init/{siteId: [0-9]+}")
+    public String init(@PathParam("siteId") int siteId) {
+        HttpSession session = req.getSession();
         long unixTime = 0;
-        int siteId = Integer.parseInt(arguments[1]);
+
+        session.setAttribute("start", "");
+        session.setAttribute("stop", "");
 
         if (session == null) {
             System.out.println("no session");
@@ -46,7 +63,8 @@ public class InitServlet extends DnaServlet {
             
             session.setAttribute("start", "");
             session.setAttribute("stop", "");
-            
+
+
             /* check if this is an existing session*/
             if(uuid != null){
                 profileId = (Integer) session.getAttribute("profile_id");
@@ -63,7 +81,7 @@ public class InitServlet extends DnaServlet {
                 /* TODO: hangs sometimes on the prepareStatement */
                 stmt = this.sql.prepareStatement("SELECT id, phenotype FROM individual WHERE profile_id="+profileId+" AND website_id="+siteId+" AND generation=((select generation FROM website WHERE id="+siteId+")) ORDER BY RANDOM() LIMIT 1;");
             }
-            
+
             String phenotype = "";
             try {
                 ResultSet res = stmt.executeQuery();
@@ -86,10 +104,63 @@ public class InitServlet extends DnaServlet {
             System.out.println("Phenotype uuid = " + session.getAttribute("phenotype_uuid"));
 
             return phenotype;
-            //return "{\"session-id\": \"" + session.getId()
-            //        + "\", \"items\": [{\"id\": \".btn\", \"attributes\": [{\"attribute\": \"background-color\", \"value\": \"blue\"}]}]}";
         }
     }
+
+    @GET @Path("/start")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String start() {
+        HttpSession session = req.getSession(false);
+        if (session == null) {
+            System.out.println("no session");
+            return "{\"code\": \"ERROR\"}";
+        } else {
+            session.setAttribute("start", new Date());
+            System.out.println("Session = " + session.getId());
+            System.out.println("Created = " + session.getAttribute("created"));
+            System.out.println("Ip = " + session.getAttribute("ip"));
+            System.out.println("Start = " + session.getAttribute("start"));
+            System.out.println("Stop = " + session.getAttribute("stop"));
+        }
+        return "{\"code\": \"OK\"}";
+    }
+
+    @GET @Path("/stop")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String stop() {
+        HttpSession session = req.getSession(false);
+
+        if (session == null) {
+            System.out.println("no session");
+        } else {
+            session.setAttribute("stop", new Date());
+            System.out.println("Session = " + session.getId());
+            System.out.println("Created = " + session.getAttribute("created"));
+            System.out.println("Ip = " + session.getAttribute("ip"));
+            System.out.println("Start = " + session.getAttribute("start"));
+            System.out.println("Stop = " + session.getAttribute("stop"));
+        }
+        return "{\"code\": \"OK\"}";
+    }
+
+    @GET @Path("/goal/{name}/{score}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String goal(@PathParam("name") String name, @PathParam("score") int score) {
+        HttpSession session = req.getSession(false);
+        if (session == null) {
+            System.out.println("no session");
+            return "{\"code\": \"ERROR\"}";
+        } else {
+            String session_id = session.getId();
+            String uuid = (String) session.getAttribute("phenotype_uuid");
+            System.out.println("Phenotype: " + uuid);
+            System.out.println("Name: " + name);
+            System.out.println("Score " + score);
+            new Goal(uuid, name, session_id, score, this.sql);
+        }
+        return "{\"code\": \"OK\"}";
+    }
+
     protected int mapToProfile(String visitor_IP, long visitor_time) {
         Location location = null;
         try {
@@ -155,20 +226,20 @@ public class InitServlet extends DnaServlet {
         // Replace "city" with the appropriate method for your database, e.g.,
         // "country".
         CityResponse response = reader.city(ipAddress);
-//        Country country = response.getCountry();
-//        System.out.println(country.getIsoCode());            // 'US'
-//        System.out.println(country.getName());               // 'United States'
-//        System.out.println(country.getNames().get("zh-CN")); // '美国'
-//
-//        Subdivision subdivision = response.getMostSpecificSubdivision();
-//        System.out.println(subdivision.getName());    // 'Minnesota'
-//        System.out.println(subdivision.getIsoCode()); // 'MN'
-//
-//        City city = response.getCity();
-//        System.out.println(city.getName()); // 'Minneapolis'
-//
-//        Postal postal = response.getPostal();
-//        System.out.println(postal.getCode()); // '55455'
+        //        Country country = response.getCountry();
+        //        System.out.println(country.getIsoCode());            // 'US'
+        //        System.out.println(country.getName());               // 'United States'
+        //        System.out.println(country.getNames().get("zh-CN")); // '美国'
+        //
+        //        Subdivision subdivision = response.getMostSpecificSubdivision();
+        //        System.out.println(subdivision.getName());    // 'Minnesota'
+        //        System.out.println(subdivision.getIsoCode()); // 'MN'
+        //
+        //        City city = response.getCity();
+        //        System.out.println(city.getName()); // 'Minneapolis'
+        //
+        //        Postal postal = response.getPostal();
+        //        System.out.println(postal.getCode()); // '55455'
 
         return response.getLocation();
     }

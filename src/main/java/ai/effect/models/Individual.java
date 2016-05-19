@@ -8,7 +8,7 @@ import java.util.Iterator;
 import org.json.*;
 import org.postgresql.util.PGobject;
 
-import ai.effect.server.SqlHandler;
+import ai.effect.datasource.SqlHandler;
 
 public class Individual {
     
