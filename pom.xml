@@ -116,7 +116,7 @@
 						<manifest>
 							<addClasspath>true</addClasspath>
 							<classpathPrefix>lib/</classpathPrefix>
-							<mainClass>ai.effect.server.App</mainClass>
+							<mainClass>ai.effect.App</mainClass>
 						</manifest>
 					</archive>
 				</configuration>

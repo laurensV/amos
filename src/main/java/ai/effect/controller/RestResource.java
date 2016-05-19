@@ -14,14 +14,12 @@ import javax.ws.rs.FormParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 
-import javax.servlet.http.HttpServletResponse;
 
 import org.eclipse.jetty.http.HttpStatus;
 
 import ai.effect.models.Individual;
 import ai.effect.models.Website;
 import ai.effect.datasource.SqlHandler;
-import ai.effect.servlet.Servlet;
 
 @Path("/api")
 public class RestResource {
