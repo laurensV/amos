@@ -5,7 +5,7 @@ import java.util.Date;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import ai.effect.server.SqlHandler;
+import ai.effect.datasource.SqlHandler;
 
 public class StopServlet extends DnaServlet {
     public StopServlet(SqlHandler sql) {

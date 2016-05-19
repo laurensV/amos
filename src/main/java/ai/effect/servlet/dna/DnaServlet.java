@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.eclipse.jetty.http.HttpStatus;
 
-import ai.effect.server.SqlHandler;
+import ai.effect.datasource.SqlHandler;
 import ai.effect.servlet.Servlet;
 
 public abstract class DnaServlet extends Servlet {

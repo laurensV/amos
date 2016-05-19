@@ -3,7 +3,7 @@ package ai.effect.servlet.dna;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import ai.effect.server.SqlHandler;
+import ai.effect.datasource.SqlHandler;
 
 import ai.effect.models.Goal;
 import ai.effect.models.Individual;

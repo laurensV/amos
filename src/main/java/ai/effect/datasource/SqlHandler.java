@@ -1,4 +1,4 @@
-package ai.effect.server;
+package ai.effect.datasource;
 
 import java.net.URI;
 import java.sql.Connection;
@@ -19,6 +19,7 @@ public class SqlHandler {
      */
     public SqlHandler() {
         this.setupDatabase();
+        System.out.println("Database connected!");
     }
 
     /**

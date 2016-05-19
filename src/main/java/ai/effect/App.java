@@ -1,4 +1,4 @@
-package ai.effect.server;
+package ai.effect;
 
 import java.net.URI;
 import java.sql.Connection;
@@ -18,6 +18,10 @@ import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 import org.eclipse.jetty.servlets.CrossOriginFilter;
 
+import org.glassfish.jersey.servlet.ServletContainer;
+
+import ai.effect.AppConfig;
+import ai.effect.datasource.SqlHandler;
 import ai.effect.servlet.dna.GoalServlet;
 import ai.effect.servlet.dna.InitServlet;
 import ai.effect.servlet.dna.StartServlet;
@@ -54,8 +58,9 @@ public class App {
         context.addServlet(new ServletHolder(new StartServlet(sqlHandler)), "/start/*");
         context.addServlet(new ServletHolder(new StopServlet(sqlHandler)), "/stop/*");
 
-        ServletContextHandler restContext = new RestService(sqlHandler);
-        server.setHandler(restContext);
+
+        //ServletContextHandler restContext = new RestService(sqlHandler);
+
         //1.Creating the resource handler
         ResourceHandler resourceHandler= new ResourceHandler();
         
@@ -71,9 +76,17 @@ public class App {
         //5.Attaching Handlers
         jsContext.setHandler(resourceHandler);
 
-        contexts.setHandlers(new Handler[] { context, restContext, jsContext });
+        // Initialize the API servlet
+        AppConfig config = new AppConfig();
+        ServletContextHandler apiContext = new ServletContextHandler(ServletContextHandler.SESSIONS);
+        ServletHolder apiServlet = new ServletHolder(new ServletContainer(config));
+        apiContext.addServlet(apiServlet, "/*");
+
+
+        contexts.setHandlers(new Handler[] { context, apiContext, jsContext });
 
         server.setHandler(contexts);
+
         server.start();
 
         System.out.println("Server started.");

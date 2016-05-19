@@ -23,7 +23,7 @@ import com.maxmind.geoip2.record.Postal;
 import com.maxmind.geoip2.record.Subdivision;
 
 import ai.effect.models.Website;
-import ai.effect.server.SqlHandler;
+import ai.effect.datasource.SqlHandler;
 
 
 public class InitServlet extends DnaServlet {
