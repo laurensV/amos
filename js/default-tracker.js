@@ -5,7 +5,6 @@ $(document).ready(function() {
     $.ajax({
         url: requestUrl,
         dataType: 'json',
-        async: false,
         xhrFields: {
               withCredentials: true
         },
@@ -21,11 +20,12 @@ $(document).ready(function() {
 
                 });
             });
+            goal("visit", 1);
         },
         error: function(xhr, textStatus, errorThrown){
            console.log('init request failed');
         },
-        timeout: 3000 // sets timeout to 3 seconds
+        timeout: 2000 // sets timeout to 3 seconds
     });
 });
 function goal(name, score){
@@ -42,11 +42,10 @@ function goal(name, score){
         error: function(xhr, textStatus, errorThrown){
            console.log('goal request failed');
         },
-        timeout: 3000 // sets timeout to 3 seconds
+        timeout: 2000 // sets timeout to 3 seconds
     });    
 }
 $(window).load(function() {
-    goal("visit", 1);
     // var requestUrl = api_url + "/dna/start/" + window.site_id;
     // $.ajax({
     //     url: requestUrl,
