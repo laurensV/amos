@@ -1,5 +1,6 @@
 package ai.effect.models;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -58,10 +59,14 @@ public class Individual {
         this.website_id = website_id;
         this.generation = 1;
         this.sql = sql;
-        /* TODO: create population (insert multiple individuals) */
-        PreparedStatement stmt = this.sql.prepareStatement("INSERT INTO individual (profile_id, website_id, phenotype, generation) VALUES (?, ?, ?, ?) RETURNING id;");
-
+        
+        Connection con = null;
+        PreparedStatement stmt = null;
+        ResultSet res = null;
         try {
+            con = this.sql.connectionPool.getConnection();
+            /* TODO: create population (insert multiple individuals) */
+            stmt = con.prepareStatement("INSERT INTO individual (profile_id, website_id, phenotype, generation) VALUES (?, ?, ?, ?) RETURNING id;");
             PGobject jsonObject = new PGobject();
             jsonObject.setType("json");
             jsonObject.setValue(this.phenotype);
@@ -69,15 +74,32 @@ public class Individual {
             stmt.setInt(2, this.website_id);
             stmt.setObject(3, jsonObject);
             stmt.setInt(4, this.generation);
-            ResultSet res = stmt.executeQuery();
+            res = stmt.executeQuery();
             
             if ( res.next() ) {
                 this.id = res.getString(1);
             }
         } catch (SQLException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
+        } finally {
+            if (res != null) {
+                try {
+                    res.close();
+                } catch (SQLException e) {
+                }
+            }
+            if (stmt != null) {
+                try {
+                    stmt.close();
+                } catch (SQLException e) {
+                }
+            }
+            if (con != null) {
+                try {
+                    con.close();
+                } catch (SQLException e) {
+                }
+            }
         }
     }
-
 }

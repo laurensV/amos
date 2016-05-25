@@ -23,22 +23,46 @@ public class Website {
         this.url = url;
         this.dna_settings = dna_settings;
         this.sql = sql;
-        PreparedStatement stmt = this.sql.prepareStatement("INSERT INTO website (url, dna_settings, generation) VALUES (?, ?, 1) RETURNING id;");
-
+        Connection con = null;
+        PreparedStatement stmt = null;
+        ResultSet res = null;
+        
         try {
+            con = this.sql.connectionPool.getConnection();
+            stmt = con.prepareStatement("INSERT INTO website (url, dna_settings, generation) VALUES (?, ?, 1) RETURNING id;");
+
+
             PGobject jsonObject = new PGobject();
             jsonObject.setType("json");
             jsonObject.setValue(dna_settings);
             stmt.setString(1, url);
             stmt.setObject(2, jsonObject);
-            ResultSet res = stmt.executeQuery();
+            res = stmt.executeQuery();
             
             if ( res.next() ) {
                 this.id = res.getInt(1);
             }
         } catch (SQLException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
+        } finally {
+            if (res != null) {
+                try {
+                    res.close();
+                } catch (SQLException e) {
+                }
+            }
+            if (stmt != null) {
+                try {
+                    stmt.close();
+                } catch (SQLException e) {
+                }
+            }
+            if (con != null) {
+                try {
+                    con.close();
+                } catch (SQLException e) {
+                }
+            }
         }
     }
 
@@ -50,13 +74,31 @@ public class Website {
      */
     public Website(int id, SqlHandler sql) {
         this.sql = sql;
-        PreparedStatement stmt = this.sql.prepareStatement("SELECT * FROM website WHERE id = ? ;");
+        Connection con = null;
+        PreparedStatement stmt = null;
         try {
+            con = this.sql.connectionPool.getConnection();
+
+            stmt = con.prepareStatement("SELECT * FROM website WHERE id = ? ;");
+        
             stmt.setInt(1, id);
             stmt.executeQuery();
         } catch (SQLException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
+        } finally {
+            if (stmt != null) {
+                try {
+                    stmt.close();
+                } catch (SQLException e) {
+                }
+            }
+            if (con != null) {
+                try {
+                    con.close();
+                } catch (SQLException e) {
+                }
+            }
         }
     }
 

@@ -12,7 +12,7 @@ public class SqlHandler {
     /**
      * Pool of database connections
      */
-    private BasicDataSource connectionPool;
+    public BasicDataSource connectionPool;
 
     /**
      * Constructor
@@ -47,7 +47,7 @@ public class SqlHandler {
         }
     }
 
-
+    /*
     public PreparedStatement prepareStatement(String sql) {
         PreparedStatement stmt = null;
         try {
@@ -58,7 +58,7 @@ public class SqlHandler {
         }
         return stmt;
     }
-
+   
     public ResultSet executeSql(String sql) {
         ResultSet rs = null;
         try {
@@ -81,5 +81,6 @@ public class SqlHandler {
             e.printStackTrace();
         }
     }
+    */
 
 }
