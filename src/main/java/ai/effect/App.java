@@ -29,7 +29,7 @@ public class App {
      * Start the main application server
      */
     public static void main(String[] args) throws Exception {
-        Server server = new Server(7071);
+        Server server = new Server(7070);
 
         ContextHandlerCollection contexts = new ContextHandlerCollection();
 
