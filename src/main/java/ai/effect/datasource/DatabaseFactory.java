@@ -20,12 +20,10 @@ public class DatabaseFactory extends AbstractBinder implements Factory<SqlHandle
         bindFactory(this).to(SqlHandler.class);
     }
 
-    @Override
     public SqlHandler provide() {
         return sql;
     }
 
-    @Override
     public void dispose(SqlHandler t) {
     }
 }
