@@ -7,10 +7,10 @@ import java.util.concurrent.ThreadLocalRandom;
 import org.json.JSONObject;
 
 public class GA {
-    public static String[] PopulationFromPopulation() {
+    public static String[] populationFromPopulation() {
         return null;
     }
-    public static String[] PopulationFromDNA(String dna, int size) {
+    public static String[] populationFromDNA(String dna, int size) {
         String[] phenotypes = new String[size];
         for (int i = 0; i < size; i++) {
             phenotypes[i] = phenotypeFromDNA(dna);

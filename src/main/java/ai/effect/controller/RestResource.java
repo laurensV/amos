@@ -19,6 +19,7 @@ import org.eclipse.jetty.http.HttpStatus;
 
 import ai.effect.models.Individual;
 import ai.effect.models.Website;
+import ai.effect.GA;
 import ai.effect.datasource.SqlHandler;
 
 @Path("/api")
@@ -40,9 +41,12 @@ public class RestResource {
             Files.write(tracker.toPath(), Integer.toString(id).getBytes(), StandardOpenOption.APPEND);
         } catch (Exception e) {}
 
-        // TODO: foreach profile add starting DNA
-        //new Individual(1, id, website.getDna(), this.sql);
-
+        String phenotypes[] = GA.populationFromDNA(website.getDna(), 10);
+        for (String phenotype: phenotypes) {           
+            //TODO: Handle the saving of individuals in GA class?
+            new Individual(1, id, phenotype, this.sql, 1); 
+        }
+        
         String resp = "{\"script\": \"localhost:7070/js/tracker-"+id+".js\"}";
         return Response.ok().entity(resp).build();
     }
