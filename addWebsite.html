@@ -77,7 +77,7 @@
                         return o;
                     };
                     $('form').submit(function() {
-                        alert('website submitted');
+                        
                         var json = JSON.stringify($(this).serializeObject());
                         $.ajax({
                           url: $(this).attr("action"),
@@ -88,7 +88,8 @@
                           data: { json:json, url:$(this).find("input[name=url]").val()},
                           timeout: 3000,
                           success: function(result) {
-                            alert(result);
+                            alert('website submitted!');
+                            console.log(result);
                           }
                         });
                         return false;
