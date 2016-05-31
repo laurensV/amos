@@ -21,7 +21,6 @@ public class Individual {
     private SqlHandler sql;
 
     public Individual(int profile_id, int website_id, String json, SqlHandler sql) {
-        // TODO Auto-generated constructor stub
         JSONObject settings = new JSONObject(json);
         Iterator<String> keys = settings.keys();
         String phenotype = "{\"items\": [";
@@ -50,10 +49,7 @@ public class Individual {
         }
         phenotype = phenotype.substring(0, phenotype.length() - 2);
 
-        phenotype += "]}";
-        System.out.println(phenotype);
-        //String dna = "{\"items\": [{\"id\": \".btn\", \"attributes\": [{\"attribute\": \"background-color\", \"value\": \"blue\"}]}]}";
-
+        phenotype += "]}";        
         this.phenotype = phenotype;
         this.profile_id = profile_id;
         this.website_id = website_id;

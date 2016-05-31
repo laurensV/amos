@@ -1,6 +1,7 @@
 package ai.effect;
 
 import java.util.Iterator;
+import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
 import org.json.JSONObject;
@@ -35,16 +36,32 @@ public class GA {
 
                 // get the value of the dynamic key
                 JSONObject attribute = element.getJSONObject(attribute_name);
+                String value;
+                String[] parts;
                 if(attribute.getString("type").equals("color")) {
                     int hue, saturation, lightness;
-                    String[] parts = attribute.getString("hue").split(";");
-                    hue = GA.randInt(Integer.parseInt(parts[0]), Integer.parseInt(parts[1]));
-                    parts = attribute.getString("saturation").split(";");
-                    saturation = GA.randInt(Integer.parseInt(parts[0]), Integer.parseInt(parts[1]));
-                    parts = attribute.getString("lightness").split(";");
-                    lightness = GA.randInt(Integer.parseInt(parts[0]), Integer.parseInt(parts[1]));
-                    String value = "hsl("+hue+", "+saturation+"%, "+lightness+"%)";
+                    parts = attribute.getString("hue").split(":");
+                    hue = randInt(Integer.parseInt(parts[0]), Integer.parseInt(parts[1]));
+                    parts = attribute.getString("saturation").split(":");
+                    saturation = randInt(Integer.parseInt(parts[0]), Integer.parseInt(parts[1]));
+                    parts = attribute.getString("lightness").split(":");
+                    lightness = randInt(Integer.parseInt(parts[0]), Integer.parseInt(parts[1]));
+                    value = "hsl("+hue+", "+saturation+"%, "+lightness+"%)";
                     phenotype += "{\"attribute\": \""+attribute_name+"\", \"value\": \""+value+"\"}, "; 
+                }else if(attribute.getString("type").equals("number")) {
+                    parts = attribute.getString("numrange").split(":");
+                    value = randInt(Integer.parseInt(parts[0]), Integer.parseInt(parts[1])) + "px";
+                    phenotype += "{\"attribute\": \""+attribute_name+"\", \"value\": \""+value+"\"}, "; 
+                } else if(attribute.getString("type").equals("text")) {
+                    parts = attribute.getString("values").split(";");
+                    int idx = new Random().nextInt(parts.length);
+                    value = (parts[idx]);
+                    phenotype += "{\"attribute\": \"text\", \"value\": \""+value+"\"}, "; 
+                } else if(attribute.getString("type").equals("custom")) {
+                    String[] values = attribute.getString("values").split(";");
+                    int idx = new Random().nextInt(values.length);
+                    value = (values[idx]);
+                    phenotype += "{\"attribute\": \""+attribute_name+"\", \"value\": \""+value+"\"}, ";                 
                 }
             }
             phenotype = phenotype.substring(0, phenotype.length() - 2);
