@@ -77,7 +77,7 @@
                         return o;
                     };
                     $('form').submit(function() {
-                    alert('su');
+                        alert('website submitted');
                         var json = JSON.stringify($(this).serializeObject());
                         $.ajax({
                           url: $(this).attr("action"),
@@ -97,15 +97,15 @@
                     $('#elements-rows').on('change', 'select.type', function (e) {
                         var html = "";
                         if(this.value == "color"){
-                            html = '<label>Hue range:<input name="property.hue" type="text" width="50"/></label>';
-                            html += '<label>Saturation range:<input name="property.saturation" type="text" width="50"/></label>';
-                            html += '<label>Lightness range:<input name="property.lightness" type="text" width="50"/></label>';
-                        }
-                        if(this.value == "text"){
-                            html = '<label>Text values (seperated by semi-colon):<input name="property.values" type="text" width="50"/></label>';
-                        }
-                        if(this.value == "number"){
-                            html = '<label>Number range:<input name="property.numrange" type="text" width="50"/></label>';
+                            html = '<label>Hue range:<input required name="property.hue" value="0:360" type="text" width="50"/></label>';
+                            html += '<label>Saturation range:<input required name="property.saturation" value="0:100"  type="text" width="50"/></label>';
+                            html += '<label>Lightness range:<input required name="property.lightness" value="0:100" type="text" width="50"/></label>';
+                        } else if(this.value == "text"){
+                            html = '<label>Text values (seperated by semi-colon):<input required name="property.values" type="text" width="50"/></label>';
+                        } else if(this.value == "number"){
+                            html = '<label>Number range (in px):<input required name="property.numrange" type="text" width="50"/></label>';
+                        } else if(this.value == "custom"){
+                            html = '<label>Values (seperated by semi-colon):<input required name="property.values" type="text" width="50"/></label>';
                         }
                         $(this).parent().parent().find("span.typefields").html(html);
                     });
@@ -121,7 +121,7 @@
                 </div>
                 <form action="http://localhost:7070/api/website/add" method="post">
                     Website URL:
-                    <input name="url" type="text">
+                    <input required name="url" type="text">
                         <br>
                             <fieldset id="elements-rows">
                                 <legend>
@@ -130,7 +130,7 @@
                                 <div class="element-row">
                                     <label>
                                         ID:
-                                        <input name="element" type="text" width="50"/>
+                                        <input required name="element" type="text" width="50"/>
                                     </label>
                                     <fieldset class="properties-rows">
                                         <legend>
@@ -139,16 +139,17 @@
                                         <div class="property-row">
                                             <label>
                                                 Property name:
-                                                <input name="property" type="text" width="50"/>
+                                                <input required name="property" type="text" width="50"/>
                                             </label>
                                             <label>
                                                 Property type:
-                                                  <select class="type" name="property.type">
+                                                <select required class="type" name="property.type">
                                                     <option value="">--Pick a type--</option>
                                                     <option value="color">Color</option>
-                                                    <option value="text">Text</option>
                                                     <option value="number">Number</option>
-                                                  </select>
+                                                    <option value="custom">Custom</option>
+                                                    <option value="text">Text</option>
+                                                </select>
                                             </label>
                                             <span class= "typefields">
                                             </span>
