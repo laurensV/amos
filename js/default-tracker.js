@@ -10,10 +10,13 @@ $(document).ready(function() {
         },
         success: function(data) {
             console.log(data);
-            //window.sessionId = data.session_id;
             $.each(data.items, function(i, item) {
                 $.each(item.attributes, function(i, attr) {
-                    $(item.id).css(attr.attribute, attr.value);
+                    if(attr.attribute == "text"){
+                        $(item.id).text(attr.value);
+                    } else {
+                        $(item.id).css(attr.attribute, attr.value);
+                    }
                 });
                 $(item.id).click(function() {
                     goal("click-"+$(this).attr('id'), 10)
@@ -25,7 +28,7 @@ $(document).ready(function() {
         error: function(xhr, textStatus, errorThrown){
            console.log('init request failed');
         },
-        timeout: 2000 // sets timeout to 3 seconds
+        timeout: 2000 // sets timeout to 2 seconds
     });
 });
 function goal(name, score){
@@ -42,7 +45,7 @@ function goal(name, score){
         error: function(xhr, textStatus, errorThrown){
            console.log('goal request failed');
         },
-        timeout: 2000 // sets timeout to 3 seconds
+        timeout: 2000 // sets timeout to 2 seconds
     });    
 }
 $(window).load(function() {
