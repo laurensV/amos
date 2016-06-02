@@ -1,0 +1,246 @@
+PROGRAM ANOVA
+fitness
+fitness
+Input file name: fitness-1.txt
+This output file name: output.txt
+
+ALL GROUPS: One-Way Analysis of Variance
+                                                                    F-ratio at    
+                Sum of       Degrees of   Mean                      5% critical   
+                squares      freedom      square       F-ratio      level        Significance
+Between groups  1683.678571  6            280.613095   5.040569     2.290432     4.287787E-4
+Within groups   2727.875     49           55.670918
+Total           4411.553571  55           80.210065
+
+
+ALL GROUPS: Individual Group Statistics
+                                                                 95% confidence interval
+                                                                 of the mean
+             Number of                 Standard     Standard     lower        upper
+             responses    Mean         deviation    error        bound        bound 
+i1           8            3.625        3.543102     1.252676     -3.319352    10.569352
+i2           8            4.5          5.237229     1.85164      -5.764781    14.764781
+i3           8            4.5          5.237229     1.85164      -5.764781    14.764781
+i4           8            4.5          5.237229     1.85164      -5.764781    14.764781
+i5           8            4.5          5.237229     1.85164      -5.764781    14.764781
+i6           8            20.0         15.491933    5.477226     -10.363631   50.363631
+i7           8            4.5          5.237229     1.85164      -5.764781    14.764781
+ 
+Total        56           6.589286     8.956007     1.196797     -10.964166   24.142737
+
+             minimum      median       maximum      moment       median       quartile     kurtosis     excess 
+                                                    skewness     skewness     skewness                  kurtosis
+i1           1.0          2.0          10.0         0.868094     1.375913     0.2          2.001658     -0.998342
+i2           1.0          2.0          15.0         1.142661     1.432055     0.2          2.596802     -0.403198
+i3           1.0          2.0          15.0         1.142661     1.432055     0.2          2.596802     -0.403198
+i4           1.0          2.0          15.0         1.142661     1.432055     0.2          2.596802     -0.403198
+i5           1.0          2.0          15.0         1.142661     1.432055     0.2          2.596802     -0.403198
+i6           4.0          14.0         50.0         0.826467     1.161895     -0.619048    2.315685     -0.684316
+i7           1.0          2.0          15.0         1.142661     1.432055     0.2          2.596802     -0.403198
+ 
+Total        1.0          3.0          50.0         2.709157     1.202306     -0.333333    11.89678     8.89678      0.640522
+
+Gaussian Probability Plot
+             Correlation  Gradient     Intercept    mu           sigma
+             coefficient                                              
+i1           0.798049     1.0          -1.19368E-9  3.625        3.16518
+i2           0.746338     1.0          -4.093994E-9 4.5          4.524488
+i3           0.746338     1.0          -4.093994E-9 4.5          4.524488
+i4           0.746338     1.0          -4.093994E-9 4.5          4.524488
+i5           0.746338     1.0          -4.093994E-9 4.5          4.524488
+i6           0.883393     1.0          1.544829E-8  20.0         14.560707
+i7           0.746338     1.0          -4.093994E-9 4.5          4.524488
+ 
+total        0.640522     1.0          5.952836E-8  6.589286     7.167729
+ 
+ 
+COMPARISON OF PAIRS OF GROUPS: One-Way Analysis of Variance
+Group1 and Group2
+                                                                    F-ratio at    
+                Sum of       Degrees of   Mean                      5% critical   
+                squares      freedom      square       F-ratio      level        Significance
+Between groups  3.0625       1            3.0625       0.153193     4.60011      0.701395
+Within groups   279.875      14           19.991071
+Total           282.9375     15           18.8625
+
+
+Group1 and Group3
+                                                                    F-ratio at    
+                Sum of       Degrees of   Mean                      5% critical   
+                squares      freedom      square       F-ratio      level        Significance
+Between groups  3.0625       1            3.0625       0.153193     4.60011      0.701395
+Within groups   279.875      14           19.991071
+Total           282.9375     15           18.8625
+
+
+Group1 and Group4
+                                                                    F-ratio at    
+                Sum of       Degrees of   Mean                      5% critical   
+                squares      freedom      square       F-ratio      level        Significance
+Between groups  3.0625       1            3.0625       0.153193     4.60011      0.701395
+Within groups   279.875      14           19.991071
+Total           282.9375     15           18.8625
+
+
+Group1 and Group5
+                                                                    F-ratio at    
+                Sum of       Degrees of   Mean                      5% critical   
+                squares      freedom      square       F-ratio      level        Significance
+Between groups  3.0625       1            3.0625       0.153193     4.60011      0.701395
+Within groups   279.875      14           19.991071
+Total           282.9375     15           18.8625
+
+
+Group1 and Group6
+                                                                    F-ratio at    
+                Sum of       Degrees of   Mean                      5% critical   
+                squares      freedom      square       F-ratio      level        Significance
+Between groups  1072.5625    1            1072.5625    8.493743     4.60011      0.011315
+Within groups   1767.875     14           126.276786
+Total           2840.4375    15           189.3625
+
+
+Group1 and Group7
+                                                                    F-ratio at    
+                Sum of       Degrees of   Mean                      5% critical   
+                squares      freedom      square       F-ratio      level        Significance
+Between groups  3.0625       1            3.0625       0.153193     4.60011      0.701395
+Within groups   279.875      14           19.991071
+Total           282.9375     15           18.8625
+
+
+Group2 and Group3
+                                                                    F-ratio at    
+                Sum of       Degrees of   Mean                      5% critical   
+                squares      freedom      square       F-ratio      level        Significance
+Between groups  0.0          1            0.0          0.0          4.60011      1.0
+Within groups   384.0        14           27.428571
+Total           384.0        15           25.6
+
+
+Group2 and Group4
+                                                                    F-ratio at    
+                Sum of       Degrees of   Mean                      5% critical   
+                squares      freedom      square       F-ratio      level        Significance
+Between groups  0.0          1            0.0          0.0          4.60011      1.0
+Within groups   384.0        14           27.428571
+Total           384.0        15           25.6
+
+
+Group2 and Group5
+                                                                    F-ratio at    
+                Sum of       Degrees of   Mean                      5% critical   
+                squares      freedom      square       F-ratio      level        Significance
+Between groups  0.0          1            0.0          0.0          4.60011      1.0
+Within groups   384.0        14           27.428571
+Total           384.0        15           25.6
+
+
+Group2 and Group6
+                                                                    F-ratio at    
+                Sum of       Degrees of   Mean                      5% critical   
+                squares      freedom      square       F-ratio      level        Significance
+Between groups  961.0        1            961.0        7.186966     4.60011      0.017916
+Within groups   1872.0       14           133.714286
+Total           2833.0       15           188.866667
+
+
+Group2 and Group7
+                                                                    F-ratio at    
+                Sum of       Degrees of   Mean                      5% critical   
+                squares      freedom      square       F-ratio      level        Significance
+Between groups  0.0          1            0.0          0.0          4.60011      1.0
+Within groups   384.0        14           27.428571
+Total           384.0        15           25.6
+
+
+Group3 and Group4
+                                                                    F-ratio at    
+                Sum of       Degrees of   Mean                      5% critical   
+                squares      freedom      square       F-ratio      level        Significance
+Between groups  0.0          1            0.0          0.0          4.60011      1.0
+Within groups   384.0        14           27.428571
+Total           384.0        15           25.6
+
+
+Group3 and Group5
+                                                                    F-ratio at    
+                Sum of       Degrees of   Mean                      5% critical   
+                squares      freedom      square       F-ratio      level        Significance
+Between groups  0.0          1            0.0          0.0          4.60011      1.0
+Within groups   384.0        14           27.428571
+Total           384.0        15           25.6
+
+
+Group3 and Group6
+                                                                    F-ratio at    
+                Sum of       Degrees of   Mean                      5% critical   
+                squares      freedom      square       F-ratio      level        Significance
+Between groups  961.0        1            961.0        7.186966     4.60011      0.017916
+Within groups   1872.0       14           133.714286
+Total           2833.0       15           188.866667
+
+
+Group3 and Group7
+                                                                    F-ratio at    
+                Sum of       Degrees of   Mean                      5% critical   
+                squares      freedom      square       F-ratio      level        Significance
+Between groups  0.0          1            0.0          0.0          4.60011      1.0
+Within groups   384.0        14           27.428571
+Total           384.0        15           25.6
+
+
+Group4 and Group5
+                                                                    F-ratio at    
+                Sum of       Degrees of   Mean                      5% critical   
+                squares      freedom      square       F-ratio      level        Significance
+Between groups  0.0          1            0.0          0.0          4.60011      1.0
+Within groups   384.0        14           27.428571
+Total           384.0        15           25.6
+
+
+Group4 and Group6
+                                                                    F-ratio at    
+                Sum of       Degrees of   Mean                      5% critical   
+                squares      freedom      square       F-ratio      level        Significance
+Between groups  961.0        1            961.0        7.186966     4.60011      0.017916
+Within groups   1872.0       14           133.714286
+Total           2833.0       15           188.866667
+
+
+Group4 and Group7
+                                                                    F-ratio at    
+                Sum of       Degrees of   Mean                      5% critical   
+                squares      freedom      square       F-ratio      level        Significance
+Between groups  0.0          1            0.0          0.0          4.60011      1.0
+Within groups   384.0        14           27.428571
+Total           384.0        15           25.6
+
+
+Group5 and Group6
+                                                                    F-ratio at    
+                Sum of       Degrees of   Mean                      5% critical   
+                squares      freedom      square       F-ratio      level        Significance
+Between groups  961.0        1            961.0        7.186966     4.60011      0.017916
+Within groups   1872.0       14           133.714286
+Total           2833.0       15           188.866667
+
+
+Group5 and Group7
+                                                                    F-ratio at    
+                Sum of       Degrees of   Mean                      5% critical   
+                squares      freedom      square       F-ratio      level        Significance
+Between groups  0.0          1            0.0          0.0          4.60011      1.0
+Within groups   384.0        14           27.428571
+Total           384.0        15           25.6
+
+
+Group6 and Group7
+                                                                    F-ratio at    
+                Sum of       Degrees of   Mean                      5% critical   
+                squares      freedom      square       F-ratio      level        Significance
+Between groups  961.0        1            961.0        7.186966     4.60011      0.017916
+Within groups   1872.0       14           133.714286
+Total           2833.0       15           188.866667
+
+
