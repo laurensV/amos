@@ -29,6 +29,10 @@ public class GA {
         return phenotypes;
     }
     
+    public static String mutateIndividual(String phenotype) {
+        return null;
+    }
+    
     public static String phenotypeFromDNA(String dna) {
         JSONObject settings = new JSONObject(dna);
         Iterator<String> keys = settings.keys();
