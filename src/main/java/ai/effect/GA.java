@@ -13,12 +13,13 @@ import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 import flanagan.analysis.ANOVA;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import ai.effect.datasource.SqlHandler;
 
 public class GA {
-    public static String[] populationFromPopulation() {
+    public static String[] newGeneration(int size, SqlHandler sql) {
         return null;
     }
     public static String[] populationFromDNA(String dna, int size) {
@@ -29,8 +30,37 @@ public class GA {
         return phenotypes;
     }
     
-    public static String mutateIndividual(String phenotype) {
-        return null;
+    public static String mutateIndividual(String phenotype, String dna) {
+        String newp = phenotypeFromDNA(dna);
+        JSONObject p11 = new JSONObject(phenotype);
+        JSONArray p22_a = new JSONObject(newp).getJSONArray("items");
+
+        while (phenotype.equals(p11.toString())){
+            for (int i = 0; i < p22_a.length(); i++) {
+                JSONArray p22_a2 = p22_a.getJSONObject(i).getJSONArray("attributes");
+                for (int j= 0; j < p22_a2.length(); j++) {
+                    if(Math.random() < 0.25){
+                        p11.getJSONArray("items").getJSONObject(i).getJSONArray("attributes").getJSONObject(j).put("value", p22_a2.getJSONObject(j).getString("value"));
+                    }
+                }
+            }
+        }
+        return p11.toString();
+    }
+    
+    public static String phenotypeFromCrossover(String p1, String p2) {
+        JSONObject p11 = new JSONObject(p1);
+        JSONArray p22_a = new JSONObject(p2).getJSONArray("items");
+
+        for (int i = 0; i < p22_a.length(); i++) {
+            JSONArray p22_a2 = p22_a.getJSONObject(i).getJSONArray("attributes");
+            for (int j= 0; j < p22_a2.length(); j++) {
+                if(Math.random() < 0.5){
+                    p11.getJSONArray("items").getJSONObject(i).getJSONArray("attributes").getJSONObject(j).put("value", p22_a2.getJSONObject(j).getString("value"));
+                }
+            }
+        }
+        return p11.toString();
     }
     
     public static String phenotypeFromDNA(String dna) {
