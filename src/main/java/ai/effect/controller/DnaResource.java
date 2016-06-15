@@ -51,6 +51,7 @@ public class DnaResource {
     @Path("/init/{siteId: [0-9]+}")
     public String init(@PathParam("siteId") int siteId) {
         HttpSession session = req.getSession();
+        session.setMaxInactiveInterval(600); // 10 minutes
         long unixTime = 0;
 
         session.setAttribute("start", "");
