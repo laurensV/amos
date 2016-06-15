@@ -19,7 +19,7 @@ $(document).ready(function() {
                     }
                 });
                 $(item.id).click(function() {
-                    goal("click-"+$(this).attr('id'), 10)
+                    goal("click-"+$(this).attr('id'), 1)
 
                 });
             });
