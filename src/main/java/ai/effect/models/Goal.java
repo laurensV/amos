@@ -31,6 +31,7 @@ public class Goal {
         this.session = session;
         this.sql = sql;
 
+
         Connection con = null;
         PreparedStatement stmt = null;
         ResultSet res = null;
@@ -116,6 +117,9 @@ public class Goal {
                 }
             }
         }
+        if(!session.equals("total")){
+            new Goal(individual_id, name, "total", score, this.sql);
+        }
         Connection con3 = null;
         PreparedStatement stmt3 = null;
         ResultSet res3 = null;
@@ -125,7 +129,6 @@ public class Goal {
             /* this is a new goal for this individual, create new row */
             stmt3 = con3.prepareStatement("INSERT INTO individual_goal (individual_id, name, session, score) VALUES (?, ?, ?, ?) RETURNING id;");
 
-        
             stmt3.setObject(1, this.individual_id, Types.OTHER);
             stmt3.setString(2, this.name);
             stmt3.setString(3, this.session);
@@ -157,6 +160,98 @@ public class Goal {
                 } catch (SQLException e) {
                 }
             }
+        }
+        /* custom made for Evenses */
+        if(session.equals("total") && !name.equals("conversion")){
+            storeConversion();
+        }
+    }
+    
+    public void storeConversion() {
+        Connection con = null;
+        PreparedStatement stmt = null;
+        ResultSet res = null;
+        int totalVisits = 0;
+        int totalOffertes = 0;
+        try {
+            con = this.sql.connectionPool.getConnection();
+            stmt = con.prepareStatement("SELECT score FROM individual_goal WHERE individual_id = ? AND name = ? AND session = ? ;");
+
+        
+            stmt.setObject(1, this.individual_id, Types.OTHER);
+            stmt.setString(2, "visit");
+            stmt.setString(3, "total");
+
+            res = stmt.executeQuery();
+            
+            /* check if there already exist a score for this goal */
+            if (res.next()) {
+                totalVisits = res.getInt(1);
+            }
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } finally {
+            if (res != null) {
+                try {
+                    res.close();
+                } catch (SQLException e) {
+                }
+            }
+            if (stmt != null) {
+                try {
+                    stmt.close();
+                } catch (SQLException e) {
+                }
+            }
+            if (con != null) {
+                try {
+                    con.close();
+                } catch (SQLException e) {
+                }
+            }
+        }
+        try {
+            con = this.sql.connectionPool.getConnection();
+            stmt = con.prepareStatement("SELECT score FROM individual_goal WHERE individual_id = ? AND name = ? AND session = ? ;");
+
+        
+            stmt.setObject(1, this.individual_id, Types.OTHER);
+            stmt.setString(2, "click-btn");
+            stmt.setString(3, "total");
+
+            res = stmt.executeQuery();
+            
+            /* check if there already exist a score for this goal */
+            if (res.next()) {
+                totalOffertes = res.getInt(1);
+            }
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } finally {
+            if (res != null) {
+                try {
+                    res.close();
+                } catch (SQLException e) {
+                }
+            }
+            if (stmt != null) {
+                try {
+                    stmt.close();
+                } catch (SQLException e) {
+                }
+            }
+            if (con != null) {
+                try {
+                    con.close();
+                } catch (SQLException e) {
+                }
+            }
+        }
+        if(totalOffertes != 0 && totalVisits != 0){
+            new Goal(individual_id, "conversion", "total", Math.round((float)totalOffertes/(float)totalVisits), this.sql);
+
         }
     }
 
