@@ -8,6 +8,7 @@ import java.nio.file.StandardOpenOption;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.FormParam;
@@ -49,5 +50,13 @@ public class RestResource {
         
         String resp = "{\"script\": \"localhost:7070/js/tracker-"+id+".js\"}";
         return Response.ok().entity(resp).build();
+    }
+    @GET
+    @Path("/newgen/{siteId: [0-9]+}")
+    public String init(@PathParam("siteId") int siteId) {
+        GA.newGeneration(siteId, sql);
+        
+        String resp = "Generation increased for siteid "+siteId;
+        return resp;
     }
 }
