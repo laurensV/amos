@@ -194,9 +194,9 @@ public class DnaResource {
         } else {
             String session_id = session.getId();
             String uuid = (String) session.getAttribute("phenotype_uuid");
-            System.out.println("Phenotype: " + uuid);
-            System.out.println("Name: " + name);
-            System.out.println("Score " + score);
+//            System.out.println("Phenotype: " + uuid);
+//            System.out.println("Name: " + name);
+//            System.out.println("Score " + score);
             new Goal(uuid, name, session_id, score, this.sql);
         }
         return "{\"code\": \"OK\"}";
