@@ -11,7 +11,6 @@ import java.sql.Types;
 import java.util.Iterator;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
-import flanagan.analysis.ANOVA;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -400,9 +399,9 @@ public class GA {
      . . . . 
      response 1 for group n     response 2 for group n  . . .   final response for group n (all on one line)
          */
-        ANOVA aov = new ANOVA("fitness");
-        aov.readResponseData(filename);
-        aov.oneWayAnalysisWithPairComparison("output.txt");
+        //ANOVA aov = new ANOVA("fitness");
+        //aov.readResponseData(filename);
+        //aov.oneWayAnalysisWithPairComparison("output.txt");
     }
     
     /* TODO: move to another (util/helper) class */

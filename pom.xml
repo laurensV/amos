@@ -26,6 +26,8 @@
       <properties>
         <env.PG_URL>127.0.0.1</env.PG_URL>
         <env.PG_PORT>5432</env.PG_PORT>
+        <env.PG_USER>postgres</env.PG_USER>
+        <env.PG_PASSW>postgres</env.PG_PASSW>
       </properties>
     </profile>
   </profiles>
