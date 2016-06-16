@@ -3,6 +3,9 @@ package ai.effect.controller;
 import java.io.File;
 import java.io.IOException;
 import java.net.InetAddress;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.util.Date;
 
 import java.sql.ResultSet;
@@ -86,9 +89,15 @@ public class DnaResource {
                     String visitor_IP = req.getRemoteAddr();
                     session.setAttribute("ip", visitor_IP);
                     /* TODO: use visitor IP instead of dummy IP */
-                    profileId = this.mapToProfile("77.175.185.162", unixTime);
+                    //profileId = this.mapToProfile("77.175.185.162", unixTime);
+                    profileId = 1;
                     session.setAttribute("profile_id", profileId);
-                    /* TODO: hangs sometimes on the prepareStatement */
+                    String text = visitor_IP + "," + session.getId() + "," + unixTime+"\n";
+                    try {
+                        Files.write(Paths.get("visitors.txt"), text.getBytes(), StandardOpenOption.APPEND);
+                    }catch (IOException e) {
+                        //exception handling left as an exercise for the reader
+                    }
                     stmt = con.prepareStatement("SELECT id, phenotype FROM individual WHERE profile_id=" + profileId
                             + " AND website_id=" + siteId + " AND generation=((select generation FROM website WHERE id="
                             + siteId + ")) ORDER BY RANDOM() LIMIT 1;");
@@ -124,13 +133,13 @@ public class DnaResource {
                 }
             }
 
-            System.out.println("Session = " + session.getId());
-            System.out.println("Created = " + session.getAttribute("created"));
-            System.out.println("Ip = " + session.getAttribute("ip"));
-            System.out.println("Start = " + session.getAttribute("start"));
-            System.out.println("Stop = " + session.getAttribute("stop"));
-            System.out.println("Profile id = " + session.getAttribute("profile_id"));
-            System.out.println("Phenotype uuid = " + session.getAttribute("phenotype_uuid"));
+//            System.out.println("Session = " + session.getId());
+//            System.out.println("Created = " + session.getAttribute("created"));
+//            System.out.println("Ip = " + session.getAttribute("ip"));
+//            System.out.println("Start = " + session.getAttribute("start"));
+//            System.out.println("Stop = " + session.getAttribute("stop"));
+//            System.out.println("Profile id = " + session.getAttribute("profile_id"));
+//            System.out.println("Phenotype uuid = " + session.getAttribute("phenotype_uuid"));
 
             return phenotype;
         }
