@@ -30,7 +30,8 @@ public class SqlHandler {
 
         try {
             // DATABASE_URL=postgres://postgres:@localhost/effect
-            URI dbUri = new URI(System.getenv().get("DATABASE_URL"));
+            // URI dbUri = new URI(System.getenv().get("DATABASE_URL"));
+            URI dbUri = new URI("postgres://postgres:postgres@localhost:5432/effect");
             String dbUrl = "jdbc:postgresql://" + dbUri.getHost() + dbUri.getPath();
 
             if (dbUri.getUserInfo() != null) {
