@@ -28,6 +28,7 @@ live website with real users.
 
 ## Thesis
 [Download Thesis PDF](master_thesis_AMOS_laurens_verspeek.pdf)
+[![Demo CountPages alpha](thumbnail_master-thesis.png)](master_thesis_AMOS_laurens_verspeek.pdf)
 
 ## System Architecture
 System architecture of the implementation of AMOS into a framework
